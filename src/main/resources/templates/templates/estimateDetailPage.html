@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../static/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link th:href="@{/css/integrated-css.css}"
+          href="../static/css/integrated-css.css"
+          rel="stylesheet">
+    <title>이케이투어 운영자</title>
+</head>
+
+<body style="background-color: #e5e5e5;">
+
+<!-- 헤더 -->
+<header class="container" style="margin: 20px auto;">
+    <div class="row row-cols-auto">
+        <div class="col"><img src="/img/logo.png"></div>
+        <div class="col"><h3>이케이 하나관광 관리자</h3></div>
+        <div class="col">
+            <form th:action="@{/admin/logout}" method="POST">
+                <input type="submit" value="로그아웃">
+            </form>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row row-cols-auto" id="topBar">
+        <div class="col-2" style="margin: auto 0;">
+            <div id="current_date" style="color: black;"></div>
+        </div>
+        <div class="col-10">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb" style="margin: 10px 0;">
+                    <li class="breadcrumb-item"><a href="mainPage.html" th:href="@{/admin}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="javascript:window.history.back();">견적 요청 내역</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">견적 요청 상세보기</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row row-cols-auto">
+        <!-- 사이드 메뉴 -->
+        <div class="col-2" style="padding: 0px;">
+            <nav class="list-group">
+                <a href="#" class="list-group-item list-group-item-action active">견적요청내역</a>
+                <a href="settingPage.html" th:href="@{/admin/setting}"
+                   class="list-group-item list-group-item-action">관리자 설정</a>
+            </nav>
+        </div>
+
+        <!-- 컨텐츠 -->
+        <article class="col-10">
+            <h5>견적 요청 상세보기</h5>
+            <hr>
+            <form style="padding: 15px 0" th:object="${estimate}" method="POST" th:action="@{/admin/delete/estimate/{estimateId}(estimateId = ${estimate.id})}">
+                <div class="row">
+                    <div class="col-10">
+
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-danger" onclick="deleteConfirm()" style="width: 100%;">삭제</button>
+                    </div>
+                </div>
+            </form>
+
+            <form th:object="${estimate}" method="POST" th:action="@{/admin/update/estimate/{estimateId}(estimateId = ${estimate.id})}">
+            <table class="table align-middle table-bordered">
+                <thead class="table-info">
+                <tr>
+                    <th colspan="4">견적 요청 정보</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><tr><td colspan="2" style="width: 50%; border-right: 0;"></td></tr></tr>
+                <tr>
+                    <th>신청자</th>
+                    <td>
+                        <input type="text" readonly class="form-control-plaintext" th:field="*{name}">
+                    </td>
+                    <th>IP</th>
+                    <td>
+                        <input type="text" readonly class="form-control-plaintext" th:field="*{ip}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>전화번호</th>
+                    <td>
+                        <input type="text" readonly class="form-control-plaintext" th:field="*{phone}">
+                    </td>
+                    <th>비밀번호</th>
+                    <td>
+                        <input type="text" readonly class="form-control-plaintext" th:field="*{password}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td>
+                        <input type="text" readonly class="form-control-plaintext" th:field="*{email}">
+                    </td>
+                    <th>요청일</th>
+                    <td>
+                        <input type="text" readonly class="form-control-plaintext" th:field="*{createdDate}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>여행구분</th>
+                    <td>
+                        <input class="form-control form-control-sm" th:field="*{travelType}">
+                    </td>
+                    <th>인원</th>
+                    <td>
+                        <div class="input-group input-group-sm" style="width: 100px;">
+                            <input type="number" class="form-control form-control-sm" th:field="*{memberCount}">
+                            <span class="input-group-text">명</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>버스 구분</th>
+                    <td>
+                        <input class="form-control form-control-sm" th:field="*{vehicleType}">
+                    </td>
+                    <th>차량 대수</th>
+                    <td>
+                        <div class="input-group input-group-sm" style="width: 100px;">
+                            <input type="number" class="form-control form-control-sm" th:field="*{vehicleNumber}">
+                            <span class="input-group-text">대</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>출발 일시</th>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:field="*{departDate}">
+                    </td>
+                    <th>도착 일시</th>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:field="*{arrivalDate}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>출발 장소</th>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:field="*{departPlace}">
+                    </td>
+                    <th>도착 장소</th>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:field="*{arrivalPlace}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>경유지</th>
+                    <td><input class="form-control form-control-sm" type="text" th:field="*{stopPlace}"></td>
+                    <th>왕복 구분</th>
+                    <td th:field="*{wayType}">
+                        <label><input type="radio" name="wayType" class="form-check-input"
+                                      th:checked="${estimate.wayType eq '왕복'}"
+                                      th:value="왕복">왕복</label>
+                        <label><input type="radio" name="wayType" class="form-check-input"
+                                      th:checked="${estimate.wayType eq '편도'}"
+                                      th:value="편도">편도</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>결제 방법</th>
+                    <td th:field="*{payment}">
+                        <label><input type="radio" name="payment" class="form-check-input"
+                                      th:checked="${estimate.payment eq '현금'}"
+                                      th:value="현금">현금</label>
+                        <label><input type="radio" name="payment" class="form-check-input"
+                                      th:checked="${estimate.payment eq '카드'}"
+                                      th:value="카드">카드</label>
+                    </td>
+                    <th>세금계산서</th>
+                    <td th:field="*{taxBill}">
+                        <label><input type="radio" name="taxBill" class="form-check-input"
+                                      th:checked="${estimate.taxBill eq '발급'}"
+                                      th:value="발급">발급</label>
+                        <label><input type="radio" name="taxBill" class="form-check-input"
+                                      th:checked="${estimate.taxBill eq '발급안함'}"
+                                      th:value="발급안함">발급 안 함</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>기타 메모 사항</th>
+                    <td colspan="3">
+                        <textarea class="form-control" rows="3"
+                                  th:field="*{memo}"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>홈페이지 표시 여부</th>
+                    <td colspan="3" th:field="*{visibility}">
+                        <label><input type="radio" name="visibility" class="form-check-input"
+                                      th:checked="${estimate.visibility eq true}"
+                                      th:value="true">표시</label>
+                        <label><input type="radio" name="visibility" class="form-check-input"
+                                      th:checked="${estimate.visibility eq false}"
+                                      th:value="false">표시 안 함</label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-group" role="group" style="display: table; margin: 0 auto;">
+                <a th:href="@{/admin/estimate/{estimateId}/excel(estimateId = ${estimate.id})}" class="btn btn-success">엑셀 다운</a>
+                <button type="submit" class="btn btn-primary" onclick="alert('견적 정보를 저장합니다.');">변경사항 저장</button>
+                <a type="button" class="btn btn-secondary" href="javascript:window.history.back();">뒤로가기</a>
+            </div>
+            </form>
+        </article>
+    </div>
+</div>
+
+<footer class="footer">
+    © 주식회사 이케이투어 LTD. All rights reserved.
+</footer>
+
+</body>
+
+<script>
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    hour = date.getHours();
+    minute = date.getMinutes();
+    second = date.getSeconds();
+    if (minute < 10) minute = "0" + minute;
+    if (second < 10) second = "0" + second;
+    document.getElementById("current_date").innerHTML = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+
+    document.getElementById('startDate').valueAsDate = new Date();
+    document.getElementById('endDate').valueAsDate = new Date();
+
+    function deleteConfirm() {
+        if (!confirm("견적요청을 영구적으로 삭제하시겠습니까?")) {
+        } else {
+            alert("해당 견적요청을 삭제했습니다.");
+        }
+    }
+</script>
+
+</html>
