@@ -1,0 +1,47 @@
+package com.ektour.common
+
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.validation.BindException
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import javax.security.auth.login.LoginException
+
+@ControllerAdvice
+class GlobalExceptionHandler {
+
+    val log = logger()
+
+    @ExceptionHandler(BindException::class)
+    fun validationFailHandle(ex: BindException): ResponseEntity<ErrorListResponse> {
+        log.warn(
+            "[{}] : {}, \nerrors = {}",
+            ex.javaClass.simpleName,
+            ex.message,
+            ex.bindingResult.fieldErrors
+        )
+
+        val errors = ex.bindingResult.fieldErrors
+        val body = ErrorListResponse(
+            errors.map {
+                ErrorResponse("유효성 검증 실패.", it.field + " / " + it.defaultMessage)
+            }
+        )
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(body)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun globalErrorHandle(ex: Exception): ResponseEntity<ErrorResponse> {
+        log.warn("[{}] handled: {}", ex.javaClass.simpleName, ex.message)
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse(ex.javaClass.simpleName, ex.message!!))
+    }
+
+    @ExceptionHandler(LoginException::class)
+    fun loginExHandler(ex: LoginException) = "loginPage"
+
+
+}
