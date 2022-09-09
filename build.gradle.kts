@@ -38,6 +38,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation("org.apache.poi:poi:5.0.0")
+	implementation("org.apache.poi:poi-ooxml:5.0.0")
 
 }
 
