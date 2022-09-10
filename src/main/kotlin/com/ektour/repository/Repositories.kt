@@ -24,32 +24,32 @@ interface EstimateRepository : JpaRepository<Estimate, Long> {
     @Query("SELECT COUNT(e) FROM Estimate e WHERE e.visibility = true")
     fun countAll(): Int
 
-    fun findAllByPhoneAndPassword(pageable: Pageable?, phone: String?, password: String?): Page<Estimate?>?
+    fun findAllByPhoneAndPassword(pageable: Pageable, phone: String, password: String): Page<Estimate>
 
-    fun findAllByPhoneAndPassword(phone: String?, password: String?): List<Estimate?>?
+    fun findAllByPhoneAndPassword(phone: String, password: String): List<Estimate>
 
-    fun findByIdAndPhoneAndPassword(id: Long?, phone: String?, password: String?): Optional<Estimate?>?
+    fun findByIdAndPhoneAndPassword(id: Long, phone: String, password: String): Estimate?
 
     @Query("SELECT e FROM Estimate e WHERE e.createdDate BETWEEN :start AND :end AND e.name LIKE %:name%")
     fun searchAllByName(
-        pageable: Pageable?,
-        @Param("start") start: String?,
-        @Param("end") end: String?,
-        @Param("name") name: String?
+        pageable: Pageable,
+        @Param("start") start: String,
+        @Param("end") end: String,
+        @Param("name") name: String
     ): Page<Estimate>
 
     @Query("SELECT e FROM Estimate e WHERE e.createdDate BETWEEN :start AND :end AND e.phone LIKE %:phone%")
     fun searchAllByPhone(
-        pageable: Pageable?,
-        @Param("start") start: String?,
-        @Param("end") end: String?,
-        @Param("phone") phone: String?
+        pageable: Pageable,
+        @Param("start") start: String,
+        @Param("end") end: String,
+        @Param("phone") phone: String
     ): Page<Estimate>
 
     @Query("SELECT e FROM Estimate e WHERE e.createdDate BETWEEN :start AND :end")
     fun searchAllByDate(
-        pageable: Pageable?,
-        @Param("start") start: String?,
-        @Param("end") end: String?
+        pageable: Pageable,
+        @Param("start") start: String,
+        @Param("end") end: String
     ): Page<Estimate>
 }

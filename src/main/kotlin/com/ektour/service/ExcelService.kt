@@ -30,7 +30,7 @@ class ExcelService(private val repository: EstimateRepository) {
 
     // 엑셀 파일 불러와서 값 수정
     fun createExcel(estimateId: Long, response: HttpServletResponse) {
-        try {
+        try  {
             // 견적 가져오기
             val estimate: Estimate = repository.findById(estimateId).orElseThrow()
 
@@ -48,22 +48,24 @@ class ExcelService(private val repository: EstimateRepository) {
             setValue(sheet, "C9", convertDateWithYear(estimate.validDate)) // 유효일
 
             // 차량-내용
-            val date: String = convertDate(estimate.departDate) + "~" + convertDate(estimate.arrivalDate)
+            val date = "${convertDate(estimate.departDate)} ~ ${convertDate(estimate.arrivalDate)}"
             setValue(sheet, "C14", date)
-            val content: String = estimate.departPlace + " ~ " + estimate.arrivalPlace
+            val content = "${estimate.departPlace} ~ ${estimate.arrivalPlace}"
             setValue(sheet, "F14", content)
             setValue(sheet, "L14", estimate.vehicleType.substring(0, 4)) // 규격
             setValue(sheet, "N14", estimate.vehicleNumber.toString()) // 댓수
             setValue(sheet, "O14", "대")
 
             // 다운로드
-            response.contentType = "ms-vnd/excel"
-            val fileName =
-                "견적서_" + estimate.name + "님_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+            val today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+            val fileName = "견적서_${estimate.name}님_${today}"
             // 엑셀 다운로드시 한글 깨짐 처리
             val outputFileName = String(fileName.toByteArray(charset("KSC5601")), Charsets.ISO_8859_1)
+
+            response.contentType = "ms-vnd/excel"
             response.setHeader("Content-Disposition", "attachment;filename=$outputFileName.xlsx")
             response.status = 200
+
             workbook.write(response.outputStream)
             workbook.close()
         } catch (e: Exception) {
