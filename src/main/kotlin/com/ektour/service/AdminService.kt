@@ -6,6 +6,7 @@ import com.ektour.common.AdminException
 import com.ektour.common.LINUX_LOGO_PATH
 import com.ektour.common.logger
 import com.ektour.dto.CompanyInfoDto
+import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.entity.Admin
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,7 +32,13 @@ class AdminService(private val adminRepository: AdminRepository) {
 
     fun logout(request: HttpServletRequest) = request.session.invalidate()
 
-    fun updatePassword(newPassword: String) = getAdmin().updatePassword(newPassword)
+    fun updatePassword(form: UpdateAdminPasswordForm) {
+        if (getAdmin().password != form.nowPassword)
+            throw AdminException("현재 비밀번호가 틀립니다.")
+        if (!form.isSamePassword())
+            throw AdminException("새로운 비밀번호를 다시 확인 해주세요.")
+        getAdmin().updatePassword(form.newPassword)
+    }
 
     fun getCompanyInfo() = CompanyInfoDto(getAdmin())
 

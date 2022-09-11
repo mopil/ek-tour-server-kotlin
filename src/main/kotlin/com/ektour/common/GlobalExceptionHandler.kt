@@ -2,6 +2,8 @@ package com.ektour.common
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.validation.BindException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -33,15 +35,14 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception::class)
-    fun globalErrorHandle(ex: Exception): ResponseEntity<ErrorResponse> {
+    fun redirectErrorPage(ex: Exception, model: Model): String {
         log.warn("[{}] handled: {}", ex.javaClass.simpleName, ex.message)
-        return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(ErrorResponse(ex.javaClass.simpleName, ex.message!!))
+        model["errorMessage"] = ex.message ?: ""
+        return "error/errorPage"
     }
 
     @ExceptionHandler(LoginException::class)
     fun loginExHandler(ex: LoginException) = "loginPage"
-
-
 }
+
+

@@ -51,25 +51,25 @@ data class EstimateForm(
     @field:NotBlank
     @field:Size(min = 4, max = 4, message = "비밀번호는 4자리로 설정해주세요")
     @field:PositiveOrZero(message = "비밀번호는 0~9자리 숫자로만 가능합니다")
-    var password: String,
+    var password: String = "1234",
 
     // 필수
-    @field:NotEmpty var vehicleType: String,
+    @field:NotEmpty var vehicleType: String = "기본값",
     var vehicleNumber: Int = 0,
     var memberCount: Int = 0,
-    @field:NotEmpty var departDate: String,
-    @field:NotEmpty var arrivalDate: String,
-    @field:NotEmpty var departPlace: String,
-    @field:NotEmpty var arrivalPlace: String,
-    @field:NotEmpty var memo: String,
+    @field:NotEmpty var departDate: String = "기본값",
+    @field:NotEmpty var arrivalDate: String = "기본값",
+    @field:NotEmpty var departPlace: String = "기본값",
+    @field:NotEmpty var arrivalPlace: String = "기본값",
+    var memo: String,
 
     // 선택
-    var travelType: String,
-    var stopPlace: String,
-    var wayType: String,
-    var payment: String,
-    var taxBill: String,
-    var ip: String
+    var travelType: String = "",
+    var stopPlace: String = "",
+    var wayType: String = "",
+    var payment: String = "",
+    var taxBill: String = "",
+    var ip: String = ""
 )
 
 fun EstimateForm.toEntity() = Estimate(

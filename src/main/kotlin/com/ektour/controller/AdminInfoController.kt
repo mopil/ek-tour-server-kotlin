@@ -57,9 +57,7 @@ class AdminInfoController(private val adminService: AdminService) {
     fun updateAdminPassword(
         @Valid @ModelAttribute("pwForm") passwordForm: UpdateAdminPasswordForm
     ): String {
-        if (passwordForm.isSamePassword()) {
-            adminService.updatePassword(passwordForm.newPassword)
-        }
+        adminService.updatePassword(passwordForm)
         return "redirect:/admin/setting"
     }
 

@@ -1,6 +1,7 @@
 package com.ektour.service
 
 import com.ektour.common.ADMIN_EMAIL_ACCOUNT
+import com.ektour.common.BoolResponse
 import com.ektour.common.EmailException
 import com.ektour.dto.EstimateForm
 import org.springframework.mail.javamail.JavaMailSender
@@ -12,7 +13,7 @@ import javax.mail.internet.InternetAddress
 @Service
 class EmailService(private val mailSender: JavaMailSender) {
     @Async
-    fun sendMail(form: EstimateForm) {
+    fun sendMail(form: EstimateForm): BoolResponse {
         try {
             val message = mailSender.createMimeMessage()
             message.addRecipients(Message.RecipientType.TO, ADMIN_EMAIL_ACCOUNT)
@@ -26,6 +27,7 @@ class EmailService(private val mailSender: JavaMailSender) {
             message.setText(text, "utf-8")
             message.setFrom(InternetAddress(ADMIN_EMAIL_ACCOUNT, form.name))
             mailSender.send(message)
+            return BoolResponse(true)
         } catch (e: Exception) {
             throw EmailException("이메일 전송 관련 오류 발생")
         }

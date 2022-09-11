@@ -1,8 +1,10 @@
 package com.ektour.service
 
 import com.ektour.EstimateRepository
+import com.ektour.common.BoolResponse
 import com.ektour.dto.*
 import com.ektour.entity.Estimate
+import com.ektour.utils.getIp
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -47,7 +49,7 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
      */
     @Transactional
     fun createEstimate(request: HttpServletRequest, form: EstimateForm): EstimateDetailDto {
-//        form.setIp(IpTracker.getClientIp(request))
+        form.ip = request.getIp()
         return estimateRepository.save(form.toEntity()).toDetailResponse()
     }
 
@@ -77,7 +79,9 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
         estimateRepository.findAllByAdmin(pageable).map { it.toDetailResponse() }
 
     // 존재하는 모든 페이지 수 조회
-    fun getAllPageCount(): Int = (estimateRepository.countAll() / 15) + 1
+    fun getAllPageCount() = PageTotalCountResponse(
+            (estimateRepository.countAll() / 15) + 1
+    )
 
     // 클라이언트 내가 쓴 견적 조회
     fun findAllMyEstimates(
@@ -131,11 +135,17 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
      */
     // 소프트 삭제
     @Transactional
-    fun softDelete(id: Long) = getEstimate(id).softDelete()
+    fun softDelete(id: Long): BoolResponse {
+        getEstimate(id).softDelete()
+        return BoolResponse(true)
+    }
 
     // 하드 삭제
     @Transactional
-    fun hardDelete(id: Long) = estimateRepository.deleteById(id)
+    fun hardDelete(id: Long): BoolResponse {
+        estimateRepository.deleteById(id)
+        return BoolResponse(true)
+    }
 
 
 }
