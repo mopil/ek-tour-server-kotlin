@@ -4,6 +4,7 @@ import com.ektour.common.auth.Auth
 import com.ektour.dto.CompanyInfoDto
 import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.service.AdminService
+import com.ektour.service.VisitService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -14,7 +15,10 @@ import javax.validation.Valid
 
 @Controller
 @RequestMapping("/admin")
-class AdminInfoController(private val adminService: AdminService) {
+class AdminInfoController(
+    private val adminService: AdminService,
+    private val visitService: VisitService
+    ) {
 
     @PostMapping("/login")
     fun login(
@@ -42,6 +46,8 @@ class AdminInfoController(private val adminService: AdminService) {
     fun settingPage(model: Model): String {
         model["infoForm"] = adminService.getCompanyInfo()
         model["pwForm"] = UpdateAdminPasswordForm()
+        model["visitToday"] = visitService.getToday()
+        model["visitTotal"] = visitService.getTotal()
         return "settingPage"
     }
 

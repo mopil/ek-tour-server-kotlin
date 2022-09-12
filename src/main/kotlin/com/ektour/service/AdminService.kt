@@ -1,6 +1,6 @@
 package com.ektour.service
 
-import com.ektour.AdminRepository
+import com.ektour.repository.AdminRepository
 import com.ektour.common.ADMIN
 import com.ektour.common.AdminException
 import com.ektour.common.LINUX_LOGO_PATH

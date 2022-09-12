@@ -1,6 +1,6 @@
 package com.ektour.service
 
-import com.ektour.EstimateRepository
+import com.ektour.repository.EstimateRepository
 import com.ektour.common.BoolResponse
 import com.ektour.dto.*
 import com.ektour.entity.Estimate

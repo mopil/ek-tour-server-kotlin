@@ -10,7 +10,7 @@
     <link th:href="@{/css/integrated-css.css}"
           href="../static/css/integrated-css.css"
           rel="stylesheet">
-    <title>이케이투어 운영자</title>
+    <title>이케이투어 관리자</title>
 </head>
 
 <body style="background-color: #e5e5e5;">
@@ -30,7 +30,8 @@
 <div class="container">
     <div class="row row-cols-auto" id="topBar">
         <div class="col-2" style="margin: auto 0;">
-            <div id="current_date" style="color: black;"></div>
+            Today : <span th:text="${visitToday}"></span><br>
+            Total : <span th:text="${visitTotal}"></span>
         </div>
         <div class="col-10">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -140,18 +141,5 @@
 </footer>
 
 </body>
-
-<script>
-    date = new Date();
-    year = date.getFullYear();
-    month = date.getMonth() + 1;
-    day = date.getDate();
-    hour = date.getHours();
-    minute = date.getMinutes();
-    second = date.getSeconds();
-    if (minute < 10) minute = "0" + minute;
-    if (second < 10) second = "0" + second;
-    document.getElementById("current_date").innerHTML = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-</script>
 
 </html>

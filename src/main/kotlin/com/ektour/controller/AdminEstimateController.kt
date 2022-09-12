@@ -5,6 +5,7 @@ import com.ektour.dto.AdminSearchForm
 import com.ektour.dto.EstimateDetailDto
 import com.ektour.service.EstimateService
 import com.ektour.service.ExcelService
+import com.ektour.service.VisitService
 import com.ektour.utils.SearchStorage
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -13,11 +14,7 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
 
@@ -27,7 +24,8 @@ import javax.validation.Valid
 class AdminEstimateController(
     private val estimateService: EstimateService,
     private val searchStorage: SearchStorage,
-    private val excelService: ExcelService
+    private val excelService: ExcelService,
+    private val visitService: VisitService
 ) {
     /**
      * 관리자페이지 - 견적요청 조회
@@ -43,10 +41,15 @@ class AdminEstimateController(
         model["eList"] = eList
         model["maxPage"] = 10
         model["adminSearchForm"] = form
+        model["visitToday"] = visitService.getToday()
+        model["visitTotal"] = visitService.getTotal()
     }
 
     @Auth @GetMapping("/main")
-    fun main(model: Model, @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable): String {
+    fun main(
+        model: Model,
+        @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
+    ): String {
         setPagingModels(
             model = model,
             pageable = pageable,

@@ -1,13 +1,15 @@
-package com.ektour
+package com.ektour.repository
 
 import com.ektour.entity.Admin
 import com.ektour.entity.Estimate
+import com.ektour.entity.Visit
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import java.util.*
+
+interface VisitRepository : JpaRepository<Visit, Long> {}
 
 interface AdminRepository : JpaRepository<Admin, Long> {
     fun existsAdminByPassword(password: String): Boolean
