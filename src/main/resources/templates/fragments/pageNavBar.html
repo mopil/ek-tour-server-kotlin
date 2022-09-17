@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="pageNavBar">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center"
+        th:with="start=${(eList.number/maxPage)*maxPage + 1},
+                                end=(${(eList.totalPages == 0) ? 1 : (start + (maxPage - 1) < eList.totalPages ? start + (maxPage - 1) : eList.totalPages)}),
+                                currentPage=${currentPage}">
+      <li th:if="${start > 1}" class="page-item">
+        <a th:href="@{/admin/main(page=0)}" th:text="'<<'" class="page-link"></a>
+      </li>
+      <li th:if="${start > 1}" class="page-item">
+        <a th:href="@{/admin/main(page=${start - maxPage})}" th:text="'<'" class="page-link"></a>
+      </li>
+      <li th:each="page: ${#numbers.sequence(start, end)}" th:attr="class=${page.equals(currentPage) ? 'page-item active' : 'page-item'}">
+        <a th:text="${page}" th:href="@{/admin/main(page=${page - 1})}" class="page-link"></a>
+      </li>
+      <li th:if="${end < eList.totalPages}" class="page-item">
+        <a th:href="@{/admin/main(page=${start + maxPage})}" th:text="'>'" class="page-link"></a>
+      </li>
+      <li th:if="${end < eList.totalPages}" class="page-item">
+        <a th:href="@{/admin/main(page=${eList.totalPages - 1})}" th:text="'>>'" class="page-link"></a>
+      </li>
+    </ul>
+  </nav>
+</th:block>
+</html>

@@ -98,6 +98,8 @@ class AdminEstimateController(
     @GetMapping("/estimate/{id}")
     fun getEstimateDetail(@PathVariable("id") id: Long, model: Model): String {
         model["estimate"] = estimateService.getEstimateToDto(id)
+        model["visitToday"] = visitService.getToday()
+        model["visitTotal"] = visitService.getTotal()
         return "estimateDetailPage"
     }
 

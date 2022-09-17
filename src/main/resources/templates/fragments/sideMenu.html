@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="sideMenuFragment">
+  <div class="col-2" style="padding: 0px;">
+    <nav class="list-group">
+      <a href="#" class="list-group-item list-group-item-action active">견적요청내역</a>
+      <a href="settingPage.html" th:href="@{/admin/setting}"
+         class="list-group-item list-group-item-action">관리자 설정</a>
+    </nav>
+  </div>
+</th:block>
+</html>

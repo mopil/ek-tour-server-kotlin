@@ -20,37 +20,15 @@
 
 <body style="background-color: #e5e5e5;">
 
-<!-- 헤더 -->
-<header class="container" style="margin: 20px auto;">
-    <div class="row row-cols-auto">
-        <div class="col"><img src="/img/logo.png"></div>
-        <div class="col"><h3>이케이 하나관광 관리자</h3></div>
-        <div class="col">
-            <form th:action="@{/admin/logout}" method="POST">
-                <input type="submit" value="로그아웃">
-            </form>
-        </div>
-    </div>
-</header>
+<!-- header -->
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
 
 <div class="container">
-    <div class="row row-cols-auto" id="topBar">
-        <div class="col-2" style="margin: auto 0;">
-            Today : <span th:text="${visitToday}"></span><br>
-            Total : <span th:text="${visitTotal}"></span>
-        </div>
-        <div class="col-10">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb" style="margin: 10px 0;">
-                    <li class="breadcrumb-item"><a href="mainPage.html" th:href="@{/admin}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">관리자 설정</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+    <!--top bar-->
+    <th:block th:replace="fragments/topBar :: topBarFragment"></th:block>
 
     <div class="row row-cols-auto">
-        <!-- 사이드 메뉴 -->
+        <!-- side menu (back to main) -->
         <div class="col-2" style="padding: 0px;">
             <nav class="list-group" >
                 <a href="mainPage.html" th:href="@{/admin}"
@@ -59,7 +37,7 @@
             </nav>
         </div>
 
-        <!-- 컨텐츠 -->
+        <!-- content -->
         <article class="col-10">
             <h5>관리자 설정</h5>
             <hr>
@@ -148,9 +126,8 @@
     </div>
 </div>
 
-<footer class="footer">
-    © 주식회사 이케이투어 LTD. All rights reserved.
-</footer>
+<!-- footer -->
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
 
 </body>
 
