@@ -23,7 +23,8 @@ class EmailService(private val mailSender: JavaMailSender) {
             text += "${form.travelType} ${form.vehicleType} ${form.vehicleNumber}대\n"
             text += "${form.departPlace} ~ ${form.arrivalPlace}\n"
             text += "경유지(${form.stopPlace})\n"
-            text += "${form.departDate} ~ ${form.arrivalDate}\n"
+            text += "${form.departDate.replace("T", " ")} ~ ${form.arrivalDate.replace("T", " ")}\n"
+            text += "${form.memo}\n"
             message.setText(text, "utf-8")
             message.setFrom(InternetAddress(ADMIN_EMAIL_ACCOUNT, form.name))
             mailSender.send(message)
