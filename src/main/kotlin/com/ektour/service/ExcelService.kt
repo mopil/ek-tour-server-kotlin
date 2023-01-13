@@ -2,7 +2,7 @@ package com.ektour.service
 
 import com.ektour.repository.EstimateRepository
 import com.ektour.common.ExcelException
-import com.ektour.common.LINUX_EXCEL_PATH
+import com.ektour.common.getExelPath
 import com.ektour.common.logger
 import com.ektour.entity.Estimate
 import org.apache.poi.openxml4j.opc.OPCPackage
@@ -35,7 +35,7 @@ class ExcelService(private val repository: EstimateRepository) {
             val estimate: Estimate = repository.findById(estimateId).orElseThrow()
 
             // 엑셀 파일 불러오기
-            val opcPackage: OPCPackage = OPCPackage.open(File(LINUX_EXCEL_PATH))
+            val opcPackage: OPCPackage = OPCPackage.open(File(getExelPath()))
             val workbook = XSSFWorkbook(opcPackage)
             val sheetName = workbook.getSheetName(0)
             val sheet: Sheet = workbook.getSheet(sheetName)

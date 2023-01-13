@@ -1,10 +1,7 @@
 package com.ektour.service
 
+import com.ektour.common.*
 import com.ektour.repository.AdminRepository
-import com.ektour.common.ADMIN
-import com.ektour.common.AdminException
-import com.ektour.common.LINUX_LOGO_PATH
-import com.ektour.common.logger
 import com.ektour.dto.CompanyInfoDto
 import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.entity.Admin
@@ -45,7 +42,7 @@ class AdminService(private val adminRepository: AdminRepository) {
     fun updateCompanyInfo(form: CompanyInfoDto) = getAdmin().updateCompanyInfo(form)
 
     fun updateLogo(file: MultipartFile) {
-        try { file.transferTo(File(LINUX_LOGO_PATH)) }
+        try { file.transferTo(File(getLogoPath())) }
         catch (e: IOException) {
             log.warn("파일 업로드 에러 : {}", e.message)
             throw AdminException("로고 변경 오류.")

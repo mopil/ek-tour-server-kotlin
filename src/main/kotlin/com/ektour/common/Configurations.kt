@@ -8,9 +8,31 @@ inline fun <reified T> T.logger(): Logger {
 }
 
 const val ADMIN = "admin"
-const val LINUX_LOGO_PATH = "/home/ubuntu/spring/logo.png";
-//const val LINUX_EXCEL_PATH = "/home/ubuntu/spring/estimate.xlsx"
-const val LINUX_EXCEL_PATH = "C:\\dev\\estimate.xlsx"
+
+fun getLogoPath(): String {
+    return if (System.getProperty("os.name").contains("Win")) {
+        "C:\\Users\\ek\\Desktop\\spring\\logo.png"
+    } else {
+        "/home/ubuntu/spring/logo.png"
+    }
+}
+
+
+fun getExelPath(): String {
+    return if (System.getProperty("os.name").contains("Win")) {
+        "C:\\dev\\estimate.xlsx"
+    } else {
+        "/home/ubuntu/spring/estimate.xlsx"
+    }
+}
+
+fun getFilePath(): String {
+    return if (System.getProperty("os.name").contains("Win")) {
+        "C:\\dev\\spring\\"
+    } else {
+        "file:///home/ubuntu/spring/"
+    }
+}
 
 
 class AdminException(message: String): RuntimeException(message)

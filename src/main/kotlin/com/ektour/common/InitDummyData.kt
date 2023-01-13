@@ -1,4 +1,4 @@
-package com.ektour
+package com.ektour.common
 
 import com.ektour.entity.Admin
 import com.ektour.entity.Visit
