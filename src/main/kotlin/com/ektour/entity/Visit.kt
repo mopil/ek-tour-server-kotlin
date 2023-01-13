@@ -8,7 +8,7 @@ import javax.persistence.Id
 @Entity
 class Visit(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 
     var today: Int = 0,
     var total: Int = 0,

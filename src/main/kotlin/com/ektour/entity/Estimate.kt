@@ -11,7 +11,7 @@ import javax.persistence.*
 @EntityListeners(AuditingEntityListener::class)
 class Estimate(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 
     // 신청자 정보
     var name: String,

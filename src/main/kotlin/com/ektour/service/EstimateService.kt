@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest
 class EstimateService(private val estimateRepository: EstimateRepository) {
 
     private fun Estimate.toDetailResponse() = EstimateDetailDto(
-        id = id!!, name = name, email = email, phone = phone, password = password,
+        id = id, name = name, email = email, phone = phone, password = password,
         travelType = travelType, vehicleType = vehicleType, vehicleNumber = vehicleNumber,
         memberCount = memberCount, departDate = departDate, arrivalDate = arrivalDate,
         departPlace = departPlace, arrivalPlace = arrivalPlace, memo = memo,
@@ -25,20 +25,20 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
     )
 
     private fun Estimate.toSimpleResponse() = EstimateSimpleResponse(
-        id = id!!, name = name, travelType = travelType, vehicleType = vehicleType,
+        id = id, name = name, travelType = travelType, vehicleType = vehicleType,
         departPlace = departPlace, arrivalPlace = arrivalPlace, createdDate = createdDate
     )
 
     private fun Page<Estimate>.toListResponse() = EstimatePagedResponse(
-            currentPage = this.pageable.pageNumber,
-            totalPage = this.totalPages,
-            currentPageCount = this.pageable.pageSize,
-            totalCount = estimateRepository.countAll(),
-            estimateList = this
-                .filter { it.visibility }
-                .map { it.toSimpleResponse() }
-                .toList()
-        )
+        currentPage = this.pageable.pageNumber,
+        totalPage = this.totalPages,
+        currentPageCount = this.pageable.pageSize,
+        totalCount = estimateRepository.countAll(),
+        estimateList = this
+            .filter { it.visibility }
+            .map { it.toSimpleResponse() }
+            .toList()
+    )
 
     private fun getEstimate(id: Long): Estimate =
         estimateRepository.findById(id).orElseThrow()
@@ -80,7 +80,7 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
 
     // 존재하는 모든 페이지 수 조회
     fun getAllPageCount() = PageTotalCountResponse(
-            (estimateRepository.countAll() / 15) + 1
+        (estimateRepository.countAll() / 15) + 1
     )
 
     // 클라이언트 내가 쓴 견적 조회

@@ -9,7 +9,7 @@ import javax.persistence.Id
 @Entity
 class Admin(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 
     var password: String,
 
