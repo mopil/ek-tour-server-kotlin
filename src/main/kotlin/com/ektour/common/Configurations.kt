@@ -17,7 +17,6 @@ fun getLogoPath(): String {
     }
 }
 
-
 fun getExelPath(): String {
     return if (System.getProperty("os.name").contains("Win")) {
         "C:\\dev\\estimate.xlsx"
@@ -34,9 +33,8 @@ fun getFilePath(): String {
     }
 }
 
-
-class AdminException(message: String): RuntimeException(message)
-class EmailException(message: String): RuntimeException(message)
-class ExcelException(message: String): RuntimeException(message)
+class AdminException(message: String) : RuntimeException(message)
+class EmailException(message: String) : RuntimeException(message)
+class ExcelException(message: String) : RuntimeException(message)
 
 const val ADMIN_EMAIL_ACCOUNT = "ektour0914@naver.com"

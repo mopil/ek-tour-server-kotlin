@@ -9,5 +9,4 @@ class EktourApplicationTests {
 	@Test
 	fun contextLoads() {
 	}
-
 }

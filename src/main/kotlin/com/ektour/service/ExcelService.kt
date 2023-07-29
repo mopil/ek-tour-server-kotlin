@@ -1,10 +1,10 @@
 package com.ektour.service
 
-import com.ektour.repository.EstimateRepository
 import com.ektour.common.ExcelException
 import com.ektour.common.getExelPath
 import com.ektour.common.logger
 import com.ektour.entity.Estimate
+import com.ektour.repository.EstimateRepository
 import org.apache.poi.openxml4j.opc.OPCPackage
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellReference
@@ -30,7 +30,7 @@ class ExcelService(private val repository: EstimateRepository) {
 
     // 엑셀 파일 불러와서 값 수정
     fun createExcel(estimateId: Long, response: HttpServletResponse) {
-        try  {
+        try {
             // 견적 가져오기
             val estimate: Estimate = repository.findById(estimateId).orElseThrow()
 
@@ -58,7 +58,7 @@ class ExcelService(private val repository: EstimateRepository) {
 
             // 다운로드
             val today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-            val fileName = "견적서_${estimate.name}님_${today}"
+            val fileName = "견적서_${estimate.name}님_$today"
             // 엑셀 다운로드시 한글 깨짐 처리
             val outputFileName = String(fileName.toByteArray(charset("KSC5601")), Charsets.ISO_8859_1)
 

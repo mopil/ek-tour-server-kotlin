@@ -2,7 +2,6 @@ package com.ektour.dto
 
 import com.ektour.entity.Admin
 
-
 data class CompanyInfoDto(
     var adminName: String,
     var infoHandlerName: String,

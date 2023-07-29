@@ -1,10 +1,10 @@
 package com.ektour.service
 
 import com.ektour.common.*
-import com.ektour.repository.AdminRepository
 import com.ektour.dto.CompanyInfoDto
 import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.entity.Admin
+import com.ektour.repository.AdminRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -42,8 +42,7 @@ class AdminService(private val adminRepository: AdminRepository) {
     fun updateCompanyInfo(form: CompanyInfoDto) = getAdmin().updateCompanyInfo(form)
 
     fun updateLogo(file: MultipartFile) {
-        try { file.transferTo(File(getLogoPath())) }
-        catch (e: IOException) {
+        try { file.transferTo(File(getLogoPath())) } catch (e: IOException) {
             log.warn("파일 업로드 에러 : {}", e.message)
             throw AdminException("로고 변경 오류.")
         }

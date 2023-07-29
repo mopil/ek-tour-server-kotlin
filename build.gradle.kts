@@ -44,7 +44,14 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation("org.apache.poi:poi:5.0.0")
 	implementation("org.apache.poi:poi-ooxml:5.0.0")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.swagger:swagger-annotations:1.5.20")
 
+	testImplementation(platform("org.junit:junit-bom:5.9.1"))
+	testImplementation("org.junit.jupiter:junit-jupiter")
+
+	implementation("io.springfox:springfox-swagger-ui")
+	implementation("io.springfox:springfox-boot-starter")
 }
 
 tasks.withType<KotlinCompile> {

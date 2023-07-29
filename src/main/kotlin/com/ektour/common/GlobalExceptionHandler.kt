@@ -44,5 +44,3 @@ class GlobalExceptionHandler {
     @ExceptionHandler(LoginException::class)
     fun loginExHandler(ex: LoginException) = "loginPage"
 }
-
-

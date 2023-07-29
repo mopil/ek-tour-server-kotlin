@@ -15,10 +15,10 @@ class VisitService(private val visitRepository: VisitRepository) {
 
     fun getToday() = getVisit().today
     fun getTotal() = getVisit().total
-    
+
     // today += 1 && total += 1
     fun visit() = getVisit().visit()
-    
+
     // 매일 오전 12시에 today 방문자 초기화
     @Scheduled(cron = "0 24 * * * ?")
     fun resetTodayVisits() {
@@ -26,6 +26,4 @@ class VisitService(private val visitRepository: VisitRepository) {
         log.info("투데이 방문자 통계 초기화 today = {}, total = {}", visitor.today, visitor.total)
         visitor.today = 0
     }
-
 }
-

@@ -1,9 +1,9 @@
 package com.ektour.service
 
-import com.ektour.repository.EstimateRepository
 import com.ektour.common.BoolResponse
 import com.ektour.dto.*
 import com.ektour.entity.Estimate
+import com.ektour.repository.EstimateRepository
 import com.ektour.utils.getIp
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -43,7 +43,6 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
     private fun getEstimate(id: Long): Estimate =
         estimateRepository.findById(id).orElseThrow()
 
-
     /**
      * 견적요청 생성(저장)
      */
@@ -63,7 +62,6 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
             .findByIdAndPhoneAndPassword(id, form.phone, form.password)
             ?.toDetailResponse()
             ?: throw NoSuchElementException("해당 데이터가 없습니다.")
-
 
     fun getEstimateToDto(id: Long): EstimateDetailDto = getEstimate(id).toDetailResponse()
 
@@ -146,6 +144,4 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
         estimateRepository.deleteById(id)
         return BoolResponse(true)
     }
-
-
 }

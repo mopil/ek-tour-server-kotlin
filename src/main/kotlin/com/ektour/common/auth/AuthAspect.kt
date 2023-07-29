@@ -17,4 +17,3 @@ class AuthAspect {
         request.request.session.getAttribute(ADMIN) ?: throw LoginException("로그인 되어 있지 않음.")
     }
 }
-
