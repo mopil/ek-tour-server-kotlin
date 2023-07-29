@@ -1,17 +1,17 @@
 package com.ektour.service
 
-import com.ektour.api.dto.CompanyInfoDto
-import com.ektour.api.dto.UpdateAdminPasswordForm
+
+import com.ektour.common.AdminConstants.ADMIN
 import com.ektour.common.PathFinder.getLogoPath
-import com.ektour.configuration.ADMIN
 import com.ektour.model.domain.Admin
 import com.ektour.model.domain.AdminRepository
+import com.ektour.web.dto.CompanyInfoDto
+import com.ektour.web.dto.UpdateAdminPasswordForm
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.IOException
-import javax.security.auth.login.LoginException
 import javax.servlet.http.HttpServletRequest
 import kotlin.RuntimeException
 

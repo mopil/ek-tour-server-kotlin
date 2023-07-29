@@ -1,18 +1,18 @@
 package com.ektour.web.controller
 
-import com.ektour.api.dto.CompanyInfoDto
-import com.ektour.api.dto.UpdateAdminPasswordForm
 import com.ektour.common.auth.AdminAuthenticate
 import com.ektour.service.AdminService
 import com.ektour.service.VisitLogService
+import com.ektour.web.dto.CompanyInfoDto
+import com.ektour.web.dto.UpdateAdminPasswordForm
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import javax.validation.Valid
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import javax.validation.Valid
 
 @Controller
 @RequestMapping("/admin")

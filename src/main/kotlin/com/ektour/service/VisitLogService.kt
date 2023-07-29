@@ -2,8 +2,8 @@ package com.ektour.service
 
 import com.ektour.model.domain.VisitLog
 import com.ektour.model.domain.VisitLogRepository
+import com.ektour.utils.IpExtractor.getIp
 import com.ektour.utils.SlackClient
-import com.ektour.utils.getIp
 import org.springframework.mobile.device.DeviceUtils
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component

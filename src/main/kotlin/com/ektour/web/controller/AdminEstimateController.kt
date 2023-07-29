@@ -1,22 +1,22 @@
 package com.ektour.web.controller
 
-import com.ektour.api.dto.AdminSearchForm
-import com.ektour.api.dto.EstimateDetailDto
 import com.ektour.common.auth.AdminAuthenticate
 import com.ektour.service.EstimateService
 import com.ektour.service.ExcelService
 import com.ektour.service.VisitLogService
-import com.ektour.utils.SearchStorage
+import com.ektour.utils.AdminSearchFormStorage
+import com.ektour.web.dto.AdminSearchForm
+import com.ektour.web.dto.EstimateDetailDto
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import javax.servlet.http.HttpServletResponse
+import javax.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletResponse
-import javax.validation.Valid
 
 @Controller
 @RequestMapping("/admin")
@@ -24,7 +24,7 @@ import javax.validation.Valid
 @AdminAuthenticate
 class AdminEstimateController(
     private val estimateService: EstimateService,
-    private val searchStorage: SearchStorage,
+    private val adminSearchFormStorage: AdminSearchFormStorage,
     private val excelService: ExcelService,
     private val visitLogService: VisitLogService
 ) {
@@ -48,18 +48,18 @@ class AdminEstimateController(
         setPagingModels(
             model = model,
             pageable = pageable,
-            eList = estimateService.findAllByPageAdmin(pageable),
+            eList = estimateService.getAllEstimatesToAdminByPaging(pageable),
             form = AdminSearchForm()
         )
         return "mainPage"
     }
 
     private fun setSearchParams(form: AdminSearchForm, pageable: Pageable, model: Model) {
-        searchStorage.setValue("search", form)
+        adminSearchFormStorage.set(form)
         setPagingModels(
             model = model,
             pageable = pageable,
-            eList = estimateService.searchByPageAdmin(pageable, form),
+            eList = estimateService.searchEstimatesByAdmin(pageable, form),
             form = form
         )
     }
@@ -81,7 +81,7 @@ class AdminEstimateController(
         pageable: Pageable,
         model: Model
     ): String {
-        setSearchParams(form = searchStorage.getValue("search"), pageable, model)
+        setSearchParams(form = adminSearchFormStorage.get(), pageable, model)
         return "searchPage"
     }
 
@@ -107,7 +107,7 @@ class AdminEstimateController(
         @PathVariable("id") id: Long,
         @ModelAttribute("estimate") form: EstimateDetailDto
     ): String {
-        estimateService.updateEstimateAdmin(id, form)
+        estimateService.updateEstimateByAdmin(id, form)
         return "redirect:/admin/main"
     }
 

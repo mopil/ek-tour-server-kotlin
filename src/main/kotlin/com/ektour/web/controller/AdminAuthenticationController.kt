@@ -3,13 +3,13 @@ package com.ektour.web.controller
 import com.ektour.service.AdminService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import javax.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import javax.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 @RequestMapping("/admin")

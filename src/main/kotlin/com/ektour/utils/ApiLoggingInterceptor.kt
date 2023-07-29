@@ -1,6 +1,7 @@
 package com.ektour.utils
 
 import com.ektour.common.MultiAccessRequestWrapper
+import com.ektour.utils.IpExtractor.getIp
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import java.time.LocalDateTime

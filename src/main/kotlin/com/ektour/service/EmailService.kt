@@ -1,8 +1,8 @@
 package com.ektour.service
 
 import com.ektour.api.dto.BoolResponse
-import com.ektour.api.dto.EstimateForm
-import com.ektour.configuration.ADMIN_EMAIL_ACCOUNT
+import com.ektour.api.dto.CreateUpdateEstimateRequest
+import com.ektour.common.AdminConstants.ADMIN_EMAIL_ACCOUNT
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ import javax.mail.internet.InternetAddress
 @Service
 class EmailService(private val mailSender: JavaMailSender) {
     @Async
-    fun sendMail(form: EstimateForm): BoolResponse {
+    fun sendMail(form: CreateUpdateEstimateRequest): BoolResponse {
         val message = mailSender.createMimeMessage()
         message.addRecipients(Message.RecipientType.TO, ADMIN_EMAIL_ACCOUNT)
         message.subject = "[이케이하나관광 견적요청]"

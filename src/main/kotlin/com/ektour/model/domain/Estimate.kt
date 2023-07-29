@@ -1,11 +1,11 @@
 package com.ektour.model.domain
 
-import com.ektour.api.dto.EstimateDetailDto
-import com.ektour.api.dto.EstimateForm
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import com.ektour.api.dto.CreateUpdateEstimateRequest
+import com.ektour.web.dto.EstimateDetailDto
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @EntityListeners(AuditingEntityListener::class)
@@ -53,24 +53,24 @@ class Estimate(
 
     fun softDelete() { this.visibility = false }
 
-    fun update(form: EstimateForm): Estimate {
-        this.name = form.name
-        this.email = form.email
-        this.phone = form.phone
-        this.password = form.password
-        this.travelType = form.travelType
-        this.vehicleType = form.vehicleType
-        this.vehicleNumber = form.vehicleNumber
-        this.memberCount = form.memberCount
-        this.departDate = form.departDate
-        this.arrivalDate = form.arrivalDate
-        this.departPlace = form.departPlace
-        this.arrivalPlace = form.arrivalPlace
-        this.memo = form.memo
-        this.stopPlace = form.stopPlace
-        this.wayType = form.wayType
-        this.payment = form.payment
-        this.taxBill = form.taxBill
+    fun updateByFrontend(form: CreateUpdateEstimateRequest): Estimate {
+        name = form.name
+        email = form.email
+        phone = form.phone
+        password = form.password
+        travelType = form.travelType
+        vehicleType = form.vehicleType
+        vehicleNumber = form.vehicleNumber
+        memberCount = form.memberCount
+        departDate = form.departDate
+        arrivalDate = form.arrivalDate
+        departPlace = form.departPlace
+        arrivalPlace = form.arrivalPlace
+        memo = form.memo
+        stopPlace = form.stopPlace
+        wayType = form.wayType
+        payment = form.payment
+        taxBill = form.taxBill
         return this
     }
 

@@ -1,150 +1,118 @@
 package com.ektour.service
 
-import com.ektour.api.dto.AdminSearchForm
 import com.ektour.api.dto.BoolResponse
-import com.ektour.api.dto.EstimateDetailDto
-import com.ektour.api.dto.EstimateForm
-import com.ektour.api.dto.EstimatePagedResponse
-import com.ektour.api.dto.EstimateSimpleResponse
-import com.ektour.api.dto.FindEstimateForm
-import com.ektour.api.dto.PageTotalCountResponse
-import com.ektour.api.dto.toEntity
-import com.ektour.model.domain.Estimate
+import com.ektour.api.dto.CreateUpdateEstimateRequest
+import com.ektour.api.dto.GetAllEstimateSimpleByPagingResponse
+import com.ektour.api.dto.GetEstimateDetailResponse
+import com.ektour.api.dto.GetEstimateRequest
+import com.ektour.api.dto.GetEstimateSimpleResponse
+import com.ektour.api.dto.GetPageTotalCountResponse
 import com.ektour.model.domain.EstimateRepository
-import com.ektour.utils.getIp
+import com.ektour.utils.IpExtractor.getIp
+import com.ektour.web.dto.AdminSearchForm
+import com.ektour.web.dto.EstimateDetailDto
+import javax.servlet.http.HttpServletRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import javax.servlet.http.HttpServletRequest
 
 @Service
 @Transactional(readOnly = true)
-class EstimateService(private val estimateRepository: EstimateRepository) {
+class EstimateService(
+    private val estimateRepository: EstimateRepository
+) {
+    private fun getEstimate(id: Long) = estimateRepository.findById(id).orElseThrow()
 
-    private fun Estimate.toDetailResponse() = EstimateDetailDto(
-        id = id, name = name, email = email, phone = phone, password = password,
-        travelType = travelType, vehicleType = vehicleType, vehicleNumber = vehicleNumber,
-        memberCount = memberCount, departDate = departDate, arrivalDate = arrivalDate,
-        departPlace = departPlace, arrivalPlace = arrivalPlace, memo = memo,
-        stopPlace = stopPlace, wayType = wayType, payment = payment, taxBill = taxBill,
-        visibility = visibility, createdDate = createdDate, ip = ip
-    )
-
-    private fun Estimate.toSimpleResponse() = EstimateSimpleResponse(
-        id = id, name = name, travelType = travelType, vehicleType = vehicleType,
-        departPlace = departPlace, arrivalPlace = arrivalPlace, createdDate = createdDate
-    )
-
-    private fun Page<Estimate>.toListResponse() = EstimatePagedResponse(
-        currentPage = this.pageable.pageNumber,
-        totalPage = this.totalPages,
-        currentPageCount = this.pageable.pageSize,
-        totalCount = estimateRepository.countAll(),
-        estimateList = this
-            .filter { it.visibility }
-            .map { it.toSimpleResponse() }
-            .toList()
-    )
-
-    private fun getEstimate(id: Long): Estimate =
-        estimateRepository.findById(id).orElseThrow()
-
-    /**
-     * 견적요청 생성(저장)
-     */
     @Transactional
-    fun createEstimate(request: HttpServletRequest, form: EstimateForm): EstimateDetailDto {
-        form.ip = request.getIp()
-        return estimateRepository.save(form.toEntity()).toDetailResponse()
+    fun createEstimate(
+        request: HttpServletRequest, form: CreateUpdateEstimateRequest
+    ): GetEstimateDetailResponse {
+        val entity = estimateRepository.save(form.toEntity(request.getIp()))
+        return GetEstimateDetailResponse(entity)
     }
 
-    /**
-     * 견적 요청 상세 조회
-     */
-    // 하나 조회 (상세 페이지용)
-    fun getEstimate(id: Long, form: FindEstimateForm): EstimateDetailDto =
-        estimateRepository
-            .findByIdAndPhoneAndPassword(id, form.phone, form.password)
-            ?.toDetailResponse()
-            ?: throw NoSuchElementException("해당 데이터가 없습니다.")
+    fun getEstimateDetailByFrontend(id: Long, form: GetEstimateRequest): GetEstimateDetailResponse {
+        val estimate = estimateRepository.findByIdAndPhoneAndPassword(id, form.phone, form.password)
+            ?: throw IllegalArgumentException("견적서가 존재하지 않습니다.")
+        return GetEstimateDetailResponse(estimate)
+    }
 
-    fun getEstimateToDto(id: Long): EstimateDetailDto = getEstimate(id).toDetailResponse()
+    fun getEstimateToDto(id: Long): EstimateDetailDto {
+        return EstimateDetailDto(getEstimate(id))
+    }
 
-    /**
-     * 견적 요청 목록 조회
-     */
-    // 클라이언트로 내려지는 견적요청 목록 (페이징)
-    fun findAllByPage(pageable: Pageable): EstimatePagedResponse =
-        estimateRepository.findAll(pageable).toListResponse()
+    fun getEstimateDetail(id: Long): GetEstimateDetailResponse {
+        return GetEstimateDetailResponse(getEstimate(id))
+    }
 
-    // 관리자페이지 내려지는 견적요청 목록 (페이징)
-    fun findAllByPageAdmin(pageable: Pageable): Page<EstimateDetailDto> =
-        estimateRepository.findAllByAdmin(pageable).map { it.toDetailResponse() }
+    fun getAllEstimatesToFrontendByPaging(pageable: Pageable): GetAllEstimateSimpleByPagingResponse {
+        return GetAllEstimateSimpleByPagingResponse(estimateRepository.findAll(pageable))
+    }
 
-    // 존재하는 모든 페이지 수 조회
-    fun getAllPageCount() = PageTotalCountResponse(
+    fun getAllEstimatesToAdminByPaging(pageable: Pageable): Page<EstimateDetailDto> {
+        return estimateRepository.findAllByAdmin(pageable)
+            .map { EstimateDetailDto(it) }
+    }
+
+    fun getAllPageCount() = GetPageTotalCountResponse(
         (estimateRepository.countAll() / 15) + 1
     )
 
-    // 클라이언트 내가 쓴 견적 조회
-    fun findAllMyEstimates(
+    fun getAllMyEstimatesToFrontendWithPaging(
         pageable: Pageable,
-        form: FindEstimateForm
-    ): EstimatePagedResponse = estimateRepository
-        .findAllByPhoneAndPassword(pageable, form.phone, form.password)
-        .toListResponse()
+        form: GetEstimateRequest
+    ): GetAllEstimateSimpleByPagingResponse {
+        val result = estimateRepository.findAllByPhoneAndPassword(pageable, form.phone, form.password)
+        return GetAllEstimateSimpleByPagingResponse(result)
+    }
 
-    // 관리자페이지 검색
-    fun searchByPageAdmin(pageable: Pageable, form: AdminSearchForm): Page<EstimateDetailDto> {
+    fun searchEstimatesByAdmin(pageable: Pageable, form: AdminSearchForm): Page<EstimateDetailDto> {
         val startDate = form.start.toString()
         val endDate = form.end.plusDays(1L).toString()
         return if (form.keyword == "") {
             estimateRepository
                 .searchAllByDate(pageable, startDate, endDate)
-                .map { it.toDetailResponse() }
+                .map { EstimateDetailDto(it) }
         } else if (form.searchType == "phone") {
             estimateRepository
                 .searchAllByPhone(pageable, startDate, endDate, form.keyword)
-                .map { it.toDetailResponse() }
+                .map { EstimateDetailDto(it) }
         } else {
             estimateRepository
                 .searchAllByName(pageable, startDate, endDate, form.keyword)
-                .map { it.toDetailResponse() }
+                .map { EstimateDetailDto(it) }
         }
     }
 
-    // 클라이언트 내가 쓴 견적 조회 페이징 없이 전체 반환
-    fun findAllMyEstimates(form: FindEstimateForm): List<EstimateSimpleResponse> =
+    fun getAllMyEstimatesToFrontendWithoutPaging(form: GetEstimateRequest): List<GetEstimateSimpleResponse> =
         estimateRepository
             .findAllByPhoneAndPassword(form.phone, form.password)
             .reversed()
-            .map { it.toSimpleResponse() }
+            .map { GetEstimateSimpleResponse(it) }
 
-    /**
-     * 견적요청 수정
-     */
-    // 클라이언트에서 수정
     @Transactional
-    fun updateEstimate(id: Long, form: EstimateForm): EstimateDetailDto =
-        getEstimate(id).update(form).toDetailResponse()
+    fun updateEstimateByFrontend(
+        id: Long, form: CreateUpdateEstimateRequest
+    ): GetEstimateDetailResponse {
+        val estimate = getEstimate(id)
+        estimate.updateByFrontend(form)
+        return GetEstimateDetailResponse(estimate)
+    }
 
-    // 관리자 페이지에서 수정
     @Transactional
-    fun updateEstimateAdmin(id: Long, form: EstimateDetailDto): EstimateDetailDto =
-        getEstimate(id).update(form).toDetailResponse()
+    fun updateEstimateByAdmin(id: Long, form: EstimateDetailDto): EstimateDetailDto {
+        val estimate = getEstimate(id)
+        estimate.update(form)
+        return EstimateDetailDto(estimate)
+    }
 
-    /**
-     * 견적요청 삭제
-     */
-    // 소프트 삭제
     @Transactional
     fun softDelete(id: Long): BoolResponse {
         getEstimate(id).softDelete()
         return BoolResponse(true)
     }
 
-    // 하드 삭제
     @Transactional
     fun hardDelete(id: Long): BoolResponse {
         estimateRepository.deleteById(id)

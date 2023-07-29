@@ -1,6 +1,6 @@
 package com.ektour.model.domain
 
-import com.ektour.api.dto.CompanyInfoDto
+import com.ektour.web.dto.CompanyInfoDto
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -10,9 +10,7 @@ import javax.persistence.Id
 class Admin(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-
     var password: String,
-
     var name: String,
     var infoHandlerName: String,
     var businessNum: String,
