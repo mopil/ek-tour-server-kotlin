@@ -4,7 +4,7 @@ import com.ektour.common.auth.Auth
 import com.ektour.dto.CompanyInfoDto
 import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.service.AdminService
-import com.ektour.service.VisitService
+import com.ektour.service.VisitLogService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.stereotype.Controller
@@ -21,7 +21,7 @@ import javax.validation.Valid
 @Api(tags = ["관리자페이지 - 정보 API"])
 class AdminInfoController(
     private val adminService: AdminService,
-    private val visitService: VisitService
+    private val visitLogService: VisitLogService
 ) {
 
     @ApiOperation("관리자 로그인")
@@ -54,8 +54,8 @@ class AdminInfoController(
     fun settingPage(model: Model): String {
         model["infoForm"] = adminService.getCompanyInfo()
         model["pwForm"] = UpdateAdminPasswordForm()
-        model["visitToday"] = visitService.getToday()
-        model["visitTotal"] = visitService.getTotal()
+        model["visitToday"] = visitLogService.getTodayVisitCount()
+        model["visitTotal"] = visitLogService.getTotalVisitCount()
         return "settingPage"
     }
 

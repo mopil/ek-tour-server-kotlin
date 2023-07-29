@@ -55,6 +55,7 @@ dependencies {
 	implementation("com.github.maricn:logback-slack-appender:1.6.1")
 
 	implementation("com.google.code.gson:gson:2.9.0")
+	implementation("org.springframework.mobile:spring-mobile-device:1.1.5.RELEASE")
 }
 
 tasks.withType<KotlinCompile> {

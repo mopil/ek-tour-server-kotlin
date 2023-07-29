@@ -1,16 +1,13 @@
 package com.ektour.common
 
 import com.ektour.entity.Admin
-import com.ektour.entity.Visit
 import com.ektour.repository.AdminRepository
-import com.ektour.repository.VisitRepository
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
 class InitDummyData(
-    private val adminRepository: AdminRepository,
-    private val visitRepository: VisitRepository
+    private val adminRepository: AdminRepository
 ) {
     @PostConstruct
     fun init() {
@@ -35,6 +32,5 @@ class InitDummyData(
                 )
             )
         }
-        visitRepository.save(Visit(id = 1L))
     }
 }

@@ -45,12 +45,8 @@ class ClientEstimateController(
 
     @ApiOperation("클라이언트 견적요청 목록 조회(페이징)")
     @GetMapping("/all")
-    fun findAllByPageClient(
-        @PageableDefault(
-            sort = ["id"],
-            direction = Sort.Direction.DESC
-        ) pageable: Pageable,
-    ): EstimatePagedResponse = estimateService.findAllByPage(pageable)
+    fun findAllByPageClient(pageable: Pageable): EstimatePagedResponse =
+        estimateService.findAllByPage(pageable)
 
     @ApiOperation("존재하는 전체 페이지 수 조회")
     @GetMapping("/all/page")

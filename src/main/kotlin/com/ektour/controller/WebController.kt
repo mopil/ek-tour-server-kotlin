@@ -1,13 +1,14 @@
 package com.ektour.controller
 
-import com.ektour.service.VisitService
+import com.ektour.service.VisitLogService
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import springfox.documentation.annotations.ApiIgnore
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 @ApiIgnore
-class WebController(private val visitService: VisitService) {
+class WebController(private val visitLogService: VisitLogService) {
     /**
      * 리액트 라우팅 리다이렉션
      */
@@ -30,8 +31,8 @@ class WebController(private val visitService: VisitService) {
     fun redirect() = "forward:/index.html"
 
     @GetMapping
-    fun mainPage(): String {
-        visitService.visit() // 방문자 기록
+    fun mainPage(request: HttpServletRequest): String {
+        visitLogService.saveVisitLog(request)
         return "forward:/index.html"
     }
 }

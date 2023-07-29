@@ -5,7 +5,7 @@ import com.ektour.dto.AdminSearchForm
 import com.ektour.dto.EstimateDetailDto
 import com.ektour.service.EstimateService
 import com.ektour.service.ExcelService
-import com.ektour.service.VisitService
+import com.ektour.service.VisitLogService
 import com.ektour.utils.SearchStorage
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -27,7 +27,7 @@ class AdminEstimateController(
     private val estimateService: EstimateService,
     private val searchStorage: SearchStorage,
     private val excelService: ExcelService,
-    private val visitService: VisitService
+    private val visitLogService: VisitLogService
 ) {
     private fun setPagingModels(
         model: Model,
@@ -39,16 +39,13 @@ class AdminEstimateController(
         model["eList"] = eList
         model["maxPage"] = 10
         model["adminSearchForm"] = form
-        model["visitToday"] = visitService.getToday()
-        model["visitTotal"] = visitService.getTotal()
+        model["visitToday"] = visitLogService.getTodayVisitCount()
+        model["visitTotal"] = visitLogService.getTotalVisitCount()
     }
 
     @ApiOperation("관리자페이지 메인화면 조회")
     @Auth @GetMapping("/main")
-    fun main(
-        model: Model,
-        @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
-    ): String {
+    fun main(model: Model, pageable: Pageable): String {
         setPagingModels(
             model = model,
             pageable = pageable,
@@ -72,7 +69,7 @@ class AdminEstimateController(
     @PostMapping("/search")
     fun search(
         @Valid @ModelAttribute("adminSearchForm") form: AdminSearchForm,
-        @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
+        pageable: Pageable,
         model: Model
     ): String {
         setSearchVars(form, pageable, model)
@@ -82,7 +79,7 @@ class AdminEstimateController(
     @ApiOperation("검색한 상태에서 페이징")
     @GetMapping("/search")
     fun searchPaging(
-        @PageableDefault(sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable,
+        pageable: Pageable,
         model: Model
     ): String {
         setSearchVars(form = searchStorage.getValue("search"), pageable, model)
@@ -93,8 +90,8 @@ class AdminEstimateController(
     @GetMapping("/estimate/{id}")
     fun getEstimateDetail(@PathVariable("id") id: Long, model: Model): String {
         model["estimate"] = estimateService.getEstimateToDto(id)
-        model["visitToday"] = visitService.getToday()
-        model["visitTotal"] = visitService.getTotal()
+        model["visitToday"] = visitLogService.getTodayVisitCount()
+        model["visitTotal"] = visitLogService.getTotalVisitCount()
         return "estimateDetailPage"
     }
 
