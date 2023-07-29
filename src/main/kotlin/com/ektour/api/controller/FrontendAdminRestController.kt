@@ -1,6 +1,6 @@
-package com.ektour.controller
+package com.ektour.api.controller
 
-import com.ektour.dto.CompanyInfoDto
+import com.ektour.api.dto.CompanyInfoDto
 import com.ektour.service.AdminService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation

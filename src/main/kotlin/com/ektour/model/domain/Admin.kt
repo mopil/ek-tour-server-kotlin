@@ -1,6 +1,6 @@
-package com.ektour.entity
+package com.ektour.model.domain
 
-import com.ektour.dto.CompanyInfoDto
+import com.ektour.api.dto.CompanyInfoDto
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType

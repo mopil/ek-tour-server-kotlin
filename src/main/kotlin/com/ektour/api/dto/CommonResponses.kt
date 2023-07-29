@@ -1,4 +1,4 @@
-package com.ektour.dto
+package com.ektour.api.dto
 
 data class BoolResponse(val result: Boolean = true)
 

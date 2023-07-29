@@ -1,5 +1,6 @@
 package com.ektour.configuration
 
+import com.ektour.common.PathFinder.getFilePath
 import com.ektour.utils.ApiLoggingInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.PageRequest

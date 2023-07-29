@@ -1,9 +1,16 @@
 package com.ektour.service
 
-import com.ektour.dto.*
-import com.ektour.dto.BoolResponse
-import com.ektour.entity.Estimate
-import com.ektour.repository.EstimateRepository
+import com.ektour.api.dto.AdminSearchForm
+import com.ektour.api.dto.BoolResponse
+import com.ektour.api.dto.EstimateDetailDto
+import com.ektour.api.dto.EstimateForm
+import com.ektour.api.dto.EstimatePagedResponse
+import com.ektour.api.dto.EstimateSimpleResponse
+import com.ektour.api.dto.FindEstimateForm
+import com.ektour.api.dto.PageTotalCountResponse
+import com.ektour.api.dto.toEntity
+import com.ektour.model.domain.Estimate
+import com.ektour.model.domain.EstimateRepository
 import com.ektour.utils.getIp
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -55,7 +62,6 @@ class EstimateService(private val estimateRepository: EstimateRepository) {
     /**
      * 견적 요청 상세 조회
      */
-
     // 하나 조회 (상세 페이지용)
     fun getEstimate(id: Long, form: FindEstimateForm): EstimateDetailDto =
         estimateRepository

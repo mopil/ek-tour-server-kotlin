@@ -1,10 +1,8 @@
 package com.ektour.service
 
-import com.ektour.configuration.ExcelException
-import com.ektour.configuration.getExelPath
-import com.ektour.configuration.logger
-import com.ektour.entity.Estimate
-import com.ektour.repository.EstimateRepository
+import com.ektour.common.PathFinder.getExelPath
+import com.ektour.model.domain.Estimate
+import com.ektour.model.domain.EstimateRepository
 import org.apache.poi.openxml4j.opc.OPCPackage
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellReference
@@ -18,8 +16,6 @@ import javax.servlet.http.HttpServletResponse
 @Service
 class ExcelService(private val repository: EstimateRepository) {
 
-    val log = logger()
-
     // 특정 셀에 특정 값 넣기
     private fun setValue(sheet: Sheet, position: String, value: String) {
         val ref = CellReference(position)
@@ -30,48 +26,43 @@ class ExcelService(private val repository: EstimateRepository) {
 
     // 엑셀 파일 불러와서 값 수정
     fun createExcel(estimateId: Long, response: HttpServletResponse) {
-        try {
-            // 견적 가져오기
-            val estimate: Estimate = repository.findById(estimateId).orElseThrow()
+        // 견적 가져오기
+        val estimate: Estimate = repository.findById(estimateId).orElseThrow()
 
-            // 엑셀 파일 불러오기
-            val opcPackage: OPCPackage = OPCPackage.open(File(getExelPath()))
-            val workbook = XSSFWorkbook(opcPackage)
-            val sheetName = workbook.getSheetName(0)
-            val sheet: Sheet = workbook.getSheet(sheetName)
+        // 엑셀 파일 불러오기
+        val opcPackage: OPCPackage = OPCPackage.open(File(getExelPath()))
+        val workbook = XSSFWorkbook(opcPackage)
+        val sheetName = workbook.getSheetName(0)
+        val sheet: Sheet = workbook.getSheet(sheetName)
 
-            // 데이터 세팅
-            setValue(sheet, "C4", estimate.name) // 수신
-            setValue(sheet, "C5", estimate.email) // 이메일
-            setValue(sheet, "C6", convertPhone(estimate.phone)) // 연락처
-            setValue(sheet, "C8", convertDateWithYear(estimate.createdDate)) // 견적일
-            setValue(sheet, "C9", convertDateWithYear(estimate.validDate)) // 유효일
+        // 데이터 세팅
+        setValue(sheet, "C4", estimate.name) // 수신
+        setValue(sheet, "C5", estimate.email) // 이메일
+        setValue(sheet, "C6", convertPhone(estimate.phone)) // 연락처
+        setValue(sheet, "C8", convertDateWithYear(estimate.createdDate)) // 견적일
+        setValue(sheet, "C9", convertDateWithYear(estimate.validDate)) // 유효일
 
-            // 차량-내용
-            val date = "${convertDate(estimate.departDate)} ~ ${convertDate(estimate.arrivalDate)}"
-            setValue(sheet, "C14", date)
-            val content = "${estimate.departPlace} ~ ${estimate.arrivalPlace}"
-            setValue(sheet, "F14", content)
-            setValue(sheet, "L14", estimate.vehicleType.substring(0, 4)) // 규격
-            setValue(sheet, "N14", estimate.vehicleNumber.toString()) // 댓수
-            setValue(sheet, "O14", "대")
+        // 차량-내용
+        val date = "${convertDate(estimate.departDate)} ~ ${convertDate(estimate.arrivalDate)}"
+        setValue(sheet, "C14", date)
+        val content = "${estimate.departPlace} ~ ${estimate.arrivalPlace}"
+        setValue(sheet, "F14", content)
+        setValue(sheet, "L14", estimate.vehicleType.substring(0, 4)) // 규격
+        setValue(sheet, "N14", estimate.vehicleNumber.toString()) // 댓수
+        setValue(sheet, "O14", "대")
 
-            // 다운로드
-            val today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-            val fileName = "견적서_${estimate.name}님_$today"
-            // 엑셀 다운로드시 한글 깨짐 처리
-            val outputFileName = String(fileName.toByteArray(charset("KSC5601")), Charsets.ISO_8859_1)
+        // 다운로드
+        val today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        val fileName = "견적서_${estimate.name}님_$today"
+        // 엑셀 다운로드시 한글 깨짐 처리
+        val outputFileName = String(fileName.toByteArray(charset("KSC5601")), Charsets.ISO_8859_1)
 
-            response.contentType = "ms-vnd/excel"
-            response.setHeader("Content-Disposition", "attachment;filename=$outputFileName.xlsx")
-            response.status = 200
+        response.contentType = "ms-vnd/excel"
+        response.setHeader("Content-Disposition", "attachment;filename=$outputFileName.xlsx")
+        response.status = 200
 
-            workbook.write(response.outputStream)
-            workbook.close()
-        } catch (e: Exception) {
-            log.warn("엑셀 에러 = {}", e.message)
-            throw ExcelException("엑셀 변환/다운로드 관련 오류 발생")
-        }
+        workbook.write(response.outputStream)
+        workbook.close()
     }
 
     // 06-29 형식

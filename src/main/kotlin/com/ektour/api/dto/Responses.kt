@@ -1,6 +1,6 @@
-package com.ektour.dto
+package com.ektour.api.dto
 
-import com.ektour.entity.Admin
+import com.ektour.model.domain.Admin
 
 data class CompanyInfoDto(
     var adminName: String,

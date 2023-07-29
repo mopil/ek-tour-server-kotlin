@@ -1,8 +1,8 @@
-package com.ektour.common
+package com.ektour.common.exception
 
-import com.ektour.configuration.logger
-import com.ektour.dto.ErrorListResponse
-import com.ektour.dto.ErrorResponse
+import com.ektour.api.dto.ErrorListResponse
+import com.ektour.api.dto.ErrorResponse
+import com.ektour.common.Logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
@@ -15,15 +15,10 @@ import javax.security.auth.login.LoginException
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    val log = logger()
-
     @ExceptionHandler(BindException::class)
     fun validationFailHandle(ex: BindException): ResponseEntity<ErrorListResponse> {
-        log.warn(
-            "[{}] : {}, \nerrors = {}",
-            ex.javaClass.simpleName,
-            ex.message,
-            ex.bindingResult.fieldErrors
+        Logger.warn(
+            "[${ex.javaClass.simpleName}] : ${ex.message}, \nerrors = ${ex.bindingResult.fieldErrors}"
         )
 
         val errors = ex.bindingResult.fieldErrors
@@ -39,7 +34,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun redirectErrorPage(ex: Exception, model: Model): String {
-        log.warn("[{}] handled: {}", ex.javaClass.simpleName, ex.message)
+        Logger.warn("[${ex.javaClass.simpleName}] handled: ${ex.message}")
         model["errorMessage"] = ex.message ?: ""
         return "error/errorPage"
     }

@@ -1,8 +1,8 @@
-package com.ektour.controller
+package com.ektour.web.controller
 
+import com.ektour.api.dto.CompanyInfoDto
+import com.ektour.api.dto.UpdateAdminPasswordForm
 import com.ektour.common.auth.AdminAuthenticate
-import com.ektour.dto.CompanyInfoDto
-import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.service.AdminService
 import com.ektour.service.VisitLogService
 import io.swagger.annotations.Api

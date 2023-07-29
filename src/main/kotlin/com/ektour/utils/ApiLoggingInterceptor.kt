@@ -1,7 +1,6 @@
 package com.ektour.utils
 
 import com.ektour.common.MultiAccessRequestWrapper
-import com.ektour.configuration.logger
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import java.time.LocalDateTime
@@ -14,7 +13,6 @@ class ApiLoggingInterceptor(
     private val slackClient: SlackClient,
     private val converter: JsonPrettyViewConverter
 ) : HandlerInterceptor {
-    val log = logger()
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

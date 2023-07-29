@@ -1,6 +1,5 @@
-package com.ektour.repository
+package com.ektour.model.domain
 
-import com.ektour.entity.Admin
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AdminRepository : JpaRepository<Admin, Long> {

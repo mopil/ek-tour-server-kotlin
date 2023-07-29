@@ -1,4 +1,4 @@
-package com.ektour.controller
+package com.ektour.web.controller
 
 import com.ektour.service.AdminService
 import io.swagger.annotations.Api
@@ -9,8 +9,10 @@ import org.springframework.ui.set
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import javax.servlet.http.HttpServletRequest
+import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
+@RequestMapping("/admin")
 @Api(tags = ["관리자페이지 - 인증 API"])
 class AdminAuthenticationController(
     private val adminService: AdminService

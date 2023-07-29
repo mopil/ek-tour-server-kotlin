@@ -19,17 +19,32 @@ class SwaggerConfig {
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
             .select()
-            .apis(RequestHandlerSelectors.basePackage("com.ektour.controller"))
+            .apis(RequestHandlerSelectors.basePackage("com.ektour.api"))
             .paths(PathSelectors.any())
             .build()
-            .apiInfo(ApiInfoBuilder().title("EkTour API").build())
+            .apiInfo(ApiInfoBuilder().title("EkTour REST API").build())
+            .groupName("REST API")
+            .produces(setOf("application/json"))
             .setGlobalResponseMessage()
+    }
+
+    @Bean
+    fun web(): Docket {
+        return Docket(DocumentationType.SWAGGER_2)
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("com.ektour.web"))
+            .paths(PathSelectors.any())
+            .build()
+            .apiInfo(ApiInfoBuilder().title("EkTour ADMIN WEB").build())
+            .groupName("ADMIN WEB")
+            .useDefaultResponseMessages(false)
+            .produces(setOf("html/text"))
     }
 
     private fun Docket.setGlobalResponseMessage(): Docket {
         val responseMessage = listOf(
-            ResponseBuilder().code(HttpStatus.OK.toString()).description("ok!!").build(),
-            ResponseBuilder().code(HttpStatus.INTERNAL_SERVER_ERROR.toString()).description("Internal Server Error!!")
+            ResponseBuilder().code(HttpStatus.OK.toString()).description("Ok").build(),
+            ResponseBuilder().code(HttpStatus.INTERNAL_SERVER_ERROR.toString()).description("Internal Server Error")
                 .build(),
             ResponseBuilder().code(HttpStatus.NOT_FOUND.toString()).description("Not Found").build()
         )

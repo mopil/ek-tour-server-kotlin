@@ -1,6 +1,6 @@
-package com.ektour.dto
+package com.ektour.api.dto
 
-import com.ektour.entity.Estimate
+import com.ektour.model.domain.Estimate
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import javax.validation.constraints.*

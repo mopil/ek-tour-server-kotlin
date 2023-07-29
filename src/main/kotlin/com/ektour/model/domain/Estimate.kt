@@ -1,7 +1,7 @@
-package com.ektour.entity
+package com.ektour.model.domain
 
-import com.ektour.dto.EstimateDetailDto
-import com.ektour.dto.EstimateForm
+import com.ektour.api.dto.EstimateDetailDto
+import com.ektour.api.dto.EstimateForm
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

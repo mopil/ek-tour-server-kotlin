@@ -1,8 +1,7 @@
 package com.ektour.service
 
-import com.ektour.configuration.logger
-import com.ektour.entity.VisitLog
-import com.ektour.repository.VisitLogRepository
+import com.ektour.model.domain.VisitLog
+import com.ektour.model.domain.VisitLogRepository
 import com.ektour.utils.SlackClient
 import com.ektour.utils.getIp
 import org.springframework.mobile.device.DeviceUtils
@@ -19,8 +18,6 @@ class VisitLogService(
     private val visitLogRepository: VisitLogRepository,
     private val slackClient: SlackClient
 ) {
-    val log = logger()
-
     fun getTodayVisitCount(): Long {
         val todayString = LocalDateTime.now().toLocalDate().toString()
         return visitLogRepository.countAllByVisitedDate(todayString)

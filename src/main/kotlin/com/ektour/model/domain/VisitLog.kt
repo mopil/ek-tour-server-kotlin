@@ -1,4 +1,4 @@
-package com.ektour.entity
+package com.ektour.model.domain
 
 import java.time.LocalDate
 import java.time.LocalDateTime

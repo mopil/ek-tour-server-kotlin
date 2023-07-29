@@ -1,6 +1,6 @@
 package com.ektour.utils
 
-import com.ektour.dto.AdminSearchForm
+import com.ektour.api.dto.AdminSearchForm
 import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 

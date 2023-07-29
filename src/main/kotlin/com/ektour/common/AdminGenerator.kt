@@ -1,16 +1,16 @@
 package com.ektour.common
 
-import com.ektour.entity.Admin
-import com.ektour.repository.AdminRepository
+import com.ektour.model.domain.Admin
+import com.ektour.model.domain.AdminRepository
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
-class InitDummyData(
+class AdminGenerator(
     private val adminRepository: AdminRepository
 ) {
     @PostConstruct
-    fun init() {
+    fun createDefaultAdmin() {
         if (adminRepository.count() == 0L) {
             adminRepository.save(
                 Admin(
