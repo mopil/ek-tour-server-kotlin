@@ -1,6 +1,6 @@
 package com.ektour.controller
 
-import com.ektour.common.auth.Auth
+import com.ektour.common.auth.AdminAuthenticate
 import com.ektour.dto.AdminSearchForm
 import com.ektour.dto.EstimateDetailDto
 import com.ektour.service.EstimateService
@@ -11,8 +11,6 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
-import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -23,6 +21,7 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/admin")
 @Api(tags = ["관리자페이지 - 견적요청 API"])
+@AdminAuthenticate
 class AdminEstimateController(
     private val estimateService: EstimateService,
     private val searchStorage: SearchStorage,
@@ -44,7 +43,7 @@ class AdminEstimateController(
     }
 
     @ApiOperation("관리자페이지 메인화면 조회")
-    @Auth @GetMapping("/main")
+    @GetMapping("/main")
     fun main(model: Model, pageable: Pageable): String {
         setPagingModels(
             model = model,
@@ -55,7 +54,7 @@ class AdminEstimateController(
         return "mainPage"
     }
 
-    private fun setSearchVars(form: AdminSearchForm, pageable: Pageable, model: Model) {
+    private fun setSearchParams(form: AdminSearchForm, pageable: Pageable, model: Model) {
         searchStorage.setValue("search", form)
         setPagingModels(
             model = model,
@@ -72,7 +71,7 @@ class AdminEstimateController(
         pageable: Pageable,
         model: Model
     ): String {
-        setSearchVars(form, pageable, model)
+        setSearchParams(form, pageable, model)
         return "searchPage"
     }
 
@@ -82,7 +81,7 @@ class AdminEstimateController(
         pageable: Pageable,
         model: Model
     ): String {
-        setSearchVars(form = searchStorage.getValue("search"), pageable, model)
+        setSearchParams(form = searchStorage.getValue("search"), pageable, model)
         return "searchPage"
     }
 

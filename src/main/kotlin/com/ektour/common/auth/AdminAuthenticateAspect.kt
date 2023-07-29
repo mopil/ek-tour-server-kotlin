@@ -10,8 +10,8 @@ import javax.security.auth.login.LoginException
 
 @Aspect
 @Component
-class AuthAspect {
-    @Before("@annotation(com.ektour.common.auth.Auth)")
+class AdminAuthenticateAspect {
+    @Before("@within(AdminAuthenticate)")
     fun authCheck() {
         val request = RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes
         request.request.session.getAttribute(ADMIN) ?: throw LoginException("로그인 되어 있지 않음.")

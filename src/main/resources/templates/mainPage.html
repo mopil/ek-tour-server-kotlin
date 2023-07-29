@@ -26,8 +26,13 @@
 </body>
 
 <script>
-    document.getElementById('startDate').valueAsDate = new Date();
-    document.getElementById('endDate').valueAsDate = new Date();
+    let endDate = new Date();
+    let startDate = new Date();
+
+    startDate.setMonth(endDate.getMonth() - 1);
+
+    document.getElementById('startDate').valueAsDate = startDate;
+    document.getElementById('endDate').valueAsDate = endDate;
 </script>
 
 </html>

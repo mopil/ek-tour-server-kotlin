@@ -15,8 +15,8 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/estimate")
-@Api(tags = ["클라이언트 - 견적요청 REST API"])
-class ClientEstimateController(
+@Api(tags = ["프론트엔드 - 견적요청 REST API"])
+class FrontendEstimateRestController(
     private val estimateService: EstimateService,
     private val emailService: EmailService
 ) {

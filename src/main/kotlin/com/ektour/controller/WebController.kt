@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 @ApiIgnore
 class WebController(private val visitLogService: VisitLogService) {
-    /**
-     * 리액트 라우팅 리다이렉션
-     */
     @GetMapping(
         value = [
             "/estimate/list/**",
@@ -28,11 +25,14 @@ class WebController(private val visitLogService: VisitLogService) {
             "/mobile/**"
         ]
     )
-    fun redirect() = "forward:/index.html"
+    fun redirectFrontendRouting() = "forward:/index.html"
 
     @GetMapping
-    fun mainPage(request: HttpServletRequest): String {
+    fun saveVisitLogAndRedirectMainFrontendPage(request: HttpServletRequest): String {
         visitLogService.saveVisitLog(request)
         return "forward:/index.html"
     }
+
+    @GetMapping("/admin")
+    fun redirectAdminEntrancePage() = "redirect:/admin/main"
 }
