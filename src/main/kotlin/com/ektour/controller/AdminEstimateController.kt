@@ -8,8 +8,6 @@ import com.ektour.service.ExcelService
 import com.ektour.service.VisitService
 import com.ektour.utils.SearchStorage
 import io.swagger.annotations.Api
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
 import io.swagger.annotations.ApiOperation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -116,7 +114,6 @@ class AdminEstimateController(
         estimateService.updateEstimateAdmin(id, form)
         return "redirect:/admin/main"
     }
-
 
     @ApiOperation("견적요청 삭제(하드)")
     @PostMapping("/delete/estimate/{id}")

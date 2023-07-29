@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 
-
 @Configuration
 @EnableAsync
 class AsyncConfig : AsyncConfigurer {
@@ -21,5 +20,3 @@ class AsyncConfig : AsyncConfigurer {
         }
     }
 }
-
-

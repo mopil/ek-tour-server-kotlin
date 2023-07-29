@@ -1,8 +1,8 @@
 package com.ektour.service
 
 import com.ektour.configuration.ADMIN_EMAIL_ACCOUNT
-import com.ektour.dto.BoolResponse
 import com.ektour.configuration.EmailException
+import com.ektour.dto.BoolResponse
 import com.ektour.dto.EstimateForm
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async

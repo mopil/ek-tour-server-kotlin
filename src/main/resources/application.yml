@@ -23,6 +23,8 @@ spring:
     web:
       pageable:
         default-page-size: 15
+  main:
+    allow-bean-definition-overriding: true
 
 server:
   error:

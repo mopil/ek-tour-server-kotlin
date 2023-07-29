@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
-
 @Component
 class SlackClient(
     private val restTemplate: RestTemplate,
@@ -25,9 +24,9 @@ class SlackClient(
 
     @Async
     fun sendSlack(
-        senderName: String = "",
+        senderName: String = "logger",
         message: String,
-        iconEmoji: String = "",
+        iconEmoji: String = ":eyes:",
         channel: String
     ) {
         val slackMessage = SlackMessage(
