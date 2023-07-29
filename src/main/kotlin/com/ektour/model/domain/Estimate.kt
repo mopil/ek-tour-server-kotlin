@@ -1,6 +1,15 @@
 package com.ektour.model.domain
 
 import com.ektour.api.dto.CreateUpdateEstimateRequest
+import com.ektour.model.PaymentMethods
+import com.ektour.model.PaymentsMethodsConverter
+import com.ektour.model.TaxBillYesOrNo
+import com.ektour.model.TaxBillYesOrNoConverter
+import com.ektour.model.TravelType
+import com.ektour.model.VehicleType
+import com.ektour.model.VehicleTypeConverter
+import com.ektour.model.WayType
+import com.ektour.model.WayTypeConverter
 import com.ektour.web.dto.EstimateDetailDto
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -12,52 +21,114 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 class Estimate(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-
-    // 신청자 정보
-    var name: String,
-    var email: String,
-    var phone: String,
-    var password: String,
-
-    // 필수
-    var travelType: String, // 일반여행, 관혼상제, 학교단체, 기타단체
-    var vehicleType: String, // 25인승 소형, 28인승 리무진, 45인승 대형
-    var vehicleNumber: Int,
-    var memberCount: Int,
-    var departDate: String,
-    var arrivalDate: String,
-    var departPlace: String,
-    var arrivalPlace: String,
-    var memo: String,
-
-    // 선택
-    var stopPlace: String = "", // 경유지
-    var wayType: String = "", // 왕복구분 : 왕복, 편도
-    var payment: String = "", // 결제방법 : 현금, 카드
-    var taxBill: String = "", // 세금계산서 : 발급, 발급안함
-    var visibility: Boolean = true,
-    var createdDate: String = "", // 견적 요청일
-    var validDate: String = "", // 견적 요청일로 부터 +7일
-
-    var ip: String,
+    val ip: String,
+    name: String,
+    email: String,
+    phone: String,
+    password: String,
+    travelType: TravelType,
+    vehicleType: VehicleType,
+    vehicleNumber: Int,
+    memberCount: Int,
+    departDate: String,
+    arrivalDate: String,
+    departPlace: String,
+    arrivalPlace: String,
+    memo: String,
+    stopPlace: String = "",
+    wayType: WayType = WayType.ROUND_TRIP,
+    payment: PaymentMethods = PaymentMethods.CASH,
+    taxBillYesOrNo: TaxBillYesOrNo = TaxBillYesOrNo.NO,
 ) {
+    var name: String = name
+        protected set
+    var email: String = email
+        protected set
+    var phone: String = phone
+        protected set
+    var password: String = password
+        protected set
+
+    var travelType: TravelType = travelType
+        protected set
+    @Convert(converter = VehicleTypeConverter::class)
+    var vehicleType: VehicleType = vehicleType
+        protected set
+    var vehicleNumber: Int = vehicleNumber
+        protected set
+    var memberCount: Int = memberCount
+        protected set
+    var departDate: String = departDate
+        protected set
+    var arrivalDate: String = arrivalDate
+        protected set
+    var departPlace: String = departPlace
+        protected set
+    var arrivalPlace: String = arrivalPlace
+        protected set
+    var memo: String = memo
+        protected set
+
+    var stopPlace: String = stopPlace
+        protected set
+    @Convert(converter = WayTypeConverter::class)
+    var wayType: WayType = wayType
+        protected set
+
+    @Convert(converter = PaymentsMethodsConverter::class)
+    var payment: PaymentMethods = payment
+        protected set
+    @Convert(converter = TaxBillYesOrNoConverter::class)
+    var taxBill: TaxBillYesOrNo = taxBillYesOrNo
+        protected set
+
+    var visibility: Boolean = true
+        protected set
+    var createdDate: String = ""
+        protected set
+    var validDate: String = ""
+        protected set
     @PrePersist
     fun onPrePersist() {
-        createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        validDate = LocalDateTime.now().plusDays(7).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        val stringFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val today = LocalDateTime.now()
+        createdDate = today.format(stringFormat)
+        validDate = today.plusDays(7).format(stringFormat)
     }
 
     fun softDelete() {
         visibility = false
     }
 
-    fun updateByFrontend(form: CreateUpdateEstimateRequest) {
+    fun updateByFrontend(
+        request: CreateUpdateEstimateRequest
+    ) {
+        name = request.name
+        email = request.email
+        phone = request.phone
+        password = request.password
+        travelType = TravelType.from(request.travelType)
+        vehicleType = VehicleType.fromKor(request.vehicleType)
+        vehicleNumber = request.vehicleNumber
+        memberCount = request.memberCount
+        departDate = request.departDate
+        arrivalDate = request.arrivalDate
+        departPlace = request.departPlace
+        arrivalPlace = request.arrivalPlace
+        memo = request.memo
+        stopPlace = request.stopPlace ?: ""
+        wayType = WayType.fromKor(request.wayType)
+        payment = PaymentMethods.fromKor(request.payment)
+        taxBill = TaxBillYesOrNo.fromKor(request.taxBill)
+    }
+
+    fun updateByAdmin(form: EstimateDetailDto) {
         name = form.name
         email = form.email
         phone = form.phone
         password = form.password
-        travelType = form.travelType
-        vehicleType = form.vehicleType
+        travelType = TravelType.from(form.travelType)
+        vehicleType = VehicleType.fromKor(form.vehicleType)
         vehicleNumber = form.vehicleNumber
         memberCount = form.memberCount
         departDate = form.departDate
@@ -66,30 +137,9 @@ class Estimate(
         arrivalPlace = form.arrivalPlace
         memo = form.memo
         stopPlace = form.stopPlace
-        wayType = form.wayType
-        payment = form.payment
-        taxBill = form.taxBill
-    }
-
-    fun update(form: EstimateDetailDto): Estimate {
-        this.name = form.name
-        this.email = form.email
-        this.phone = form.phone
-        this.password = form.password
-        this.travelType = form.travelType
-        this.vehicleType = form.vehicleType
-        this.vehicleNumber = form.vehicleNumber
-        this.memberCount = form.memberCount
-        this.departDate = form.departDate
-        this.arrivalDate = form.arrivalDate
-        this.departPlace = form.departPlace
-        this.arrivalPlace = form.arrivalPlace
-        this.memo = form.memo
-        this.stopPlace = form.stopPlace
-        this.wayType = form.wayType
-        this.payment = form.payment
-        this.taxBill = form.taxBill
-        this.visibility = form.visibility
-        return this
+        wayType = WayType.fromKor(form.wayType)
+        payment = PaymentMethods.fromKor(form.payment)
+        taxBill = TaxBillYesOrNo.fromKor(form.taxBill)
+        visibility = form.visibility
     }
 }

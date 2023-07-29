@@ -9,12 +9,12 @@ import com.ektour.web.dto.CompanyInfoDto
 import com.ektour.web.dto.UpdateAdminPasswordForm
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import javax.validation.Valid
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.validation.Valid
 
 @Controller
 @Api(tags = ["관리자페이지 - 정보"])

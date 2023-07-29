@@ -47,7 +47,7 @@ class ExcelService(private val repository: EstimateRepository) {
         setValue(sheet, "C14", date)
         val content = "${estimate.departPlace} ~ ${estimate.arrivalPlace}"
         setValue(sheet, "F14", content)
-        setValue(sheet, "L14", estimate.vehicleType.substring(0, 4)) // 규격
+        setValue(sheet, "L14", estimate.vehicleType.kor.substring(0, 4)) // 규격
         setValue(sheet, "N14", estimate.vehicleNumber.toString()) // 댓수
         setValue(sheet, "O14", "대")
 

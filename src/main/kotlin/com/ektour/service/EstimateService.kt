@@ -11,11 +11,11 @@ import com.ektour.model.domain.EstimateRepository
 import com.ektour.utils.IpExtractor.getIp
 import com.ektour.web.dto.AdminSearchForm
 import com.ektour.web.dto.EstimateDetailDto
-import javax.servlet.http.HttpServletRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.servlet.http.HttpServletRequest
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +26,8 @@ class EstimateService(
 
     @Transactional
     fun createEstimate(
-        request: HttpServletRequest, form: CreateUpdateEstimateRequest
+        request: HttpServletRequest,
+        form: CreateUpdateEstimateRequest
     ): GetEstimateDetailResponse {
         val entity = estimateRepository.save(form.toEntity(request.getIp()))
         return GetEstimateDetailResponse(entity)
@@ -93,7 +94,8 @@ class EstimateService(
 
     @Transactional
     fun updateEstimateByFrontend(
-        id: Long, form: CreateUpdateEstimateRequest
+        id: Long,
+        form: CreateUpdateEstimateRequest
     ): GetEstimateDetailResponse {
         val estimate = getEstimate(id)
         estimate.updateByFrontend(form)
@@ -103,7 +105,7 @@ class EstimateService(
     @Transactional
     fun updateEstimateByAdmin(id: Long, form: EstimateDetailDto): EstimateDetailDto {
         val estimate = getEstimate(id)
-        estimate.update(form)
+        estimate.updateByAdmin(form)
         return EstimateDetailDto(estimate)
     }
 

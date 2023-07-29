@@ -13,10 +13,10 @@ import com.ektour.service.EstimateService
 import com.ektour.web.dto.EstimateDetailDto
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import javax.servlet.http.HttpServletRequest
-import javax.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
+import javax.validation.Valid
 
 @RestController
 @Api(tags = ["프론트엔드 - 견적요청 REST API"])
@@ -31,7 +31,7 @@ class FrontendEstimateRestController(
         request: HttpServletRequest
     ): GetEstimateDetailResponse {
         val result = estimateService.createEstimate(request, form)
-        emailService.sendMail(form)
+//        emailService.sendMail(form)
         return result
     }
 

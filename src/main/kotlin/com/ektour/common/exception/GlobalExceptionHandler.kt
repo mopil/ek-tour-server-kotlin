@@ -4,7 +4,6 @@ import com.ektour.api.dto.ErrorListResponse
 import com.ektour.api.dto.ErrorResponse
 import com.ektour.common.Logger
 import com.ektour.web.StaticPages
-import javax.security.auth.login.LoginException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
@@ -12,6 +11,7 @@ import org.springframework.ui.set
 import org.springframework.validation.BindException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import javax.security.auth.login.LoginException
 
 @ControllerAdvice
 class GlobalExceptionHandler {

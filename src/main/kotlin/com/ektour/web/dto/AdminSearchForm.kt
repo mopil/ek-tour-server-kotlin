@@ -1,8 +1,8 @@
 package com.ektour.web.dto
 
+import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import javax.validation.constraints.NotNull
-import org.springframework.format.annotation.DateTimeFormat
 
 data class AdminSearchForm(
     @field:NotNull

@@ -1,8 +1,8 @@
 package com.ektour.utils
 
 import com.ektour.web.dto.AdminSearchForm
-import java.util.concurrent.ConcurrentHashMap
 import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class AdminSearchFormStorage {

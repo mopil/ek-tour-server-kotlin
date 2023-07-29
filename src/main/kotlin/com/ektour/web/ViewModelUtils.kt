@@ -14,5 +14,4 @@ class ViewModelUtils(
         model["visitTotal"] = visitLogService.getTotalVisitCount()
         return model
     }
-
 }

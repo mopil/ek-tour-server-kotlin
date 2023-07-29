@@ -2,10 +2,10 @@ package com.ektour.web.controller
 
 import com.ektour.service.VisitLogService
 import com.ektour.web.StaticPages
-import javax.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import springfox.documentation.annotations.ApiIgnore
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 @ApiIgnore

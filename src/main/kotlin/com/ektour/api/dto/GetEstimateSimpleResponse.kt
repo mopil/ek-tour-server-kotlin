@@ -14,10 +14,10 @@ data class GetEstimateSimpleResponse(
     constructor(entity: Estimate) : this(
         id = entity.id,
         name = entity.name,
-        travelType = entity.travelType,
+        travelType = entity.travelType.name,
         departPlace = entity.departPlace,
         arrivalPlace = entity.arrivalPlace,
-        vehicleType = entity.vehicleType,
+        vehicleType = entity.vehicleType.kor,
         createdDate = entity.createdDate
     )
 }

@@ -8,9 +8,6 @@ import org.springframework.data.repository.query.Param
 
 interface EstimateRepository : JpaRepository<Estimate, Long> {
 
-    @Query("SELECT e FROM Estimate e WHERE e.visibility = true")
-    fun findAllByPage(pageable: Pageable): Page<Estimate>
-
     @Query("SELECT e FROM Estimate e")
     fun findAllByAdmin(pageable: Pageable): Page<Estimate>
 
