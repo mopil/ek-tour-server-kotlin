@@ -1,6 +1,9 @@
 package com.ektour.service
 
-import com.ektour.common.*
+import com.ektour.configuration.ADMIN
+import com.ektour.configuration.AdminException
+import com.ektour.configuration.getLogoPath
+import com.ektour.configuration.logger
 import com.ektour.dto.CompanyInfoDto
 import com.ektour.dto.UpdateAdminPasswordForm
 import com.ektour.entity.Admin

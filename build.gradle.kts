@@ -52,6 +52,8 @@ dependencies {
 
 	implementation("io.springfox:springfox-swagger-ui")
 	implementation("io.springfox:springfox-boot-starter")
+	implementation("com.github.maricn:logback-slack-appender:1.6.1")
+
 }
 
 tasks.withType<KotlinCompile> {

@@ -1,6 +1,6 @@
 package com.ektour.service
 
-import com.ektour.common.logger
+import com.ektour.configuration.logger
 import com.ektour.repository.VisitRepository
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component

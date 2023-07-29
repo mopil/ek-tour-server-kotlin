@@ -1,6 +1,6 @@
 package com.ektour.controller
 
-import com.ektour.common.BoolResponse
+import com.ektour.dto.BoolResponse
 import com.ektour.dto.*
 import com.ektour.service.EmailService
 import com.ektour.service.EstimateService

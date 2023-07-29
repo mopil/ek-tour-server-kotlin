@@ -5,6 +5,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
   profiles:
     active: secret
   mvc:
@@ -34,3 +35,4 @@ server:
 logging:
   level:
     org.hibernate.SQL: debug
+  config: classpath:logback/logback.xml

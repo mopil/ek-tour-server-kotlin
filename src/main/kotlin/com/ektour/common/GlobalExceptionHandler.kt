@@ -1,5 +1,8 @@
 package com.ektour.common
 
+import com.ektour.configuration.logger
+import com.ektour.dto.ErrorListResponse
+import com.ektour.dto.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model

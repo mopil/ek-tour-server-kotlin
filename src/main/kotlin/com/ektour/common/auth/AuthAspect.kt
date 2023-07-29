@@ -1,6 +1,6 @@
 package com.ektour.common.auth
 
-import com.ektour.common.ADMIN
+import com.ektour.configuration.ADMIN
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.springframework.stereotype.Component
