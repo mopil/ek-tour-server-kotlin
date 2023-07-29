@@ -3,24 +3,24 @@ package com.ektour.service
 
 import com.ektour.common.AdminConstants.ADMIN
 import com.ektour.common.PathFinder.getLogoPath
+import com.ektour.common.exception.AdminException
 import com.ektour.model.domain.Admin
 import com.ektour.model.domain.AdminRepository
 import com.ektour.web.dto.CompanyInfoDto
 import com.ektour.web.dto.UpdateAdminPasswordForm
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.IOException
 import javax.servlet.http.HttpServletRequest
-import kotlin.RuntimeException
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 @Transactional
 class AdminService(private val adminRepository: AdminRepository) {
 
     fun getAdmin(): Admin = adminRepository.findById(1L)
-        .orElseThrow { throw RuntimeException("관리자 조회 실패") }
+        .orElseThrow { throw AdminException("관리자 조회 실패") }
 
     fun login(request: HttpServletRequest, password: String): Boolean {
         if (!adminRepository.existsAdminByPassword(password)) return false
@@ -32,9 +32,9 @@ class AdminService(private val adminRepository: AdminRepository) {
 
     fun updatePassword(form: UpdateAdminPasswordForm) {
         if (getAdmin().password != form.nowPassword)
-            throw RuntimeException("현재 비밀번호가 틀립니다.")
+            throw AdminException("현재 비밀번호가 틀립니다.")
         if (!form.isSamePassword())
-            throw RuntimeException("새로운 비밀번호를 다시 확인 해주세요.")
+            throw AdminException("새로운 비밀번호를 다시 확인 해주세요.")
         getAdmin().updatePassword(form.newPassword)
     }
 
@@ -46,7 +46,7 @@ class AdminService(private val adminRepository: AdminRepository) {
         try {
             file.transferTo(File(getLogoPath()))
         } catch (e: IOException) {
-            throw RuntimeException("로고 변경 오류 : ${e.message}")
+            throw AdminException("로고 변경 오류 : ${e.message}")
         }
     }
 }

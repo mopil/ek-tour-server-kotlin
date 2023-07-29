@@ -1,14 +1,18 @@
 package com.ektour.web.controller
 
 import com.ektour.service.VisitLogService
+import com.ektour.web.StaticPages
+import javax.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import springfox.documentation.annotations.ApiIgnore
-import javax.servlet.http.HttpServletRequest
 
 @Controller
 @ApiIgnore
 class WebController(private val visitLogService: VisitLogService) {
+    companion object {
+        const val FORWARD_INDEX_HTML = "forward:/index.html"
+    }
     @GetMapping(
         value = [
             "/estimate/list/**",
@@ -25,14 +29,14 @@ class WebController(private val visitLogService: VisitLogService) {
             "/mobile/**"
         ]
     )
-    fun redirectFrontendRouting() = "forward:/index.html"
+    fun redirectFrontendRouting() = FORWARD_INDEX_HTML
 
     @GetMapping
     fun saveVisitLogAndRedirectMainFrontendPage(request: HttpServletRequest): String {
         visitLogService.saveVisitLog(request)
-        return "forward:/index.html"
+        return FORWARD_INDEX_HTML
     }
 
     @GetMapping("/admin")
-    fun redirectAdminEntrancePage() = "redirect:/admin/main"
+    fun redirectAdminEntrancePage() = StaticPages.Redirect.ADMIN_MAIN
 }

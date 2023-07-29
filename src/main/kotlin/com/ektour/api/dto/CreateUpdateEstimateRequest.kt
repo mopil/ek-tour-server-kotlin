@@ -2,7 +2,11 @@ package com.ektour.api.dto
 
 import com.ektour.model.domain.Estimate
 import io.swagger.annotations.ApiModelProperty
-import javax.validation.constraints.*
+import javax.validation.constraints.Email
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.PositiveOrZero
+import javax.validation.constraints.Size
 
 data class CreateUpdateEstimateRequest(
     @field:NotBlank
@@ -28,7 +32,7 @@ data class CreateUpdateEstimateRequest(
     @field:NotEmpty val arrivalDate: String = "기본값",
     @field:NotEmpty val departPlace: String = "기본값",
     @field:NotEmpty val arrivalPlace: String = "기본값",
-    var memo: String,
+    val memo: String,
 
     // 선택
     @ApiModelProperty(required = false)

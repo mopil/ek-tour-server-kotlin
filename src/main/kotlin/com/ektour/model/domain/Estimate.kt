@@ -22,28 +22,24 @@ class Estimate(
     // 필수
     var travelType: String, // 일반여행, 관혼상제, 학교단체, 기타단체
     var vehicleType: String, // 25인승 소형, 28인승 리무진, 45인승 대형
-    var vehicleNumber: Int, // 차량대수
-    var memberCount: Int, // 인원수
-    var departDate: String, // 출발일시
-    var arrivalDate: String, // 도착일시
-    var departPlace: String, // 출발지
-    var arrivalPlace: String, // 도착지
-    var memo: String, // 기타메모
+    var vehicleNumber: Int,
+    var memberCount: Int,
+    var departDate: String,
+    var arrivalDate: String,
+    var departPlace: String,
+    var arrivalPlace: String,
+    var memo: String,
 
     // 선택
-    var stopPlace: String, // 경유지
-    var wayType: String, // 왕복구분 : 왕복, 편도
-    var payment: String, // 결제방법 : 현금, 카드
-    var taxBill: String, // 세금계산서 : 발급, 발급안함
-
-    // 견적 요청 삭제여부 (사용자에게 보여지는 여부)
+    var stopPlace: String = "", // 경유지
+    var wayType: String = "", // 왕복구분 : 왕복, 편도
+    var payment: String = "", // 결제방법 : 현금, 카드
+    var taxBill: String = "", // 세금계산서 : 발급, 발급안함
     var visibility: Boolean = true,
-
     var createdDate: String = "", // 견적 요청일
     var validDate: String = "", // 견적 요청일로 부터 +7일
 
     var ip: String,
-
 ) {
     @PrePersist
     fun onPrePersist() {
@@ -51,9 +47,11 @@ class Estimate(
         validDate = LocalDateTime.now().plusDays(7).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
     }
 
-    fun softDelete() { this.visibility = false }
+    fun softDelete() {
+        visibility = false
+    }
 
-    fun updateByFrontend(form: CreateUpdateEstimateRequest): Estimate {
+    fun updateByFrontend(form: CreateUpdateEstimateRequest) {
         name = form.name
         email = form.email
         phone = form.phone
@@ -71,7 +69,6 @@ class Estimate(
         wayType = form.wayType
         payment = form.payment
         taxBill = form.taxBill
-        return this
     }
 
     fun update(form: EstimateDetailDto): Estimate {

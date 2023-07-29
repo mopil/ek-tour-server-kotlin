@@ -3,8 +3,10 @@ package com.ektour.web.controller
 import com.ektour.common.auth.AdminAuthenticate
 import com.ektour.service.EstimateService
 import com.ektour.service.ExcelService
-import com.ektour.service.VisitLogService
 import com.ektour.utils.AdminSearchFormStorage
+import com.ektour.web.StaticPages
+import com.ektour.web.ViewModelUtils
+import com.ektour.web.WebUris
 import com.ektour.web.dto.AdminSearchForm
 import com.ektour.web.dto.EstimateDetailDto
 import io.swagger.annotations.Api
@@ -19,31 +21,36 @@ import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/admin")
-@Api(tags = ["관리자페이지 - 견적요청 API"])
+@Api(tags = ["관리자페이지 - 견적요청"])
 @AdminAuthenticate
 class AdminEstimateController(
     private val estimateService: EstimateService,
     private val adminSearchFormStorage: AdminSearchFormStorage,
     private val excelService: ExcelService,
-    private val visitLogService: VisitLogService
+    private val viewModelUtils: ViewModelUtils
 ) {
+    companion object {
+        const val ESTIMATE = "estimate"
+        const val ADMIN_SEARCH_FORM = "adminSearchForm"
+        const val CURRENT_PAGE = "currentPage"
+        const val MAX_PAGE = "maxPage"
+        const val ESTIMATE_LIST = "eList"
+    }
     private fun setPagingModels(
         model: Model,
         pageable: Pageable,
         eList: Page<EstimateDetailDto>,
         form: AdminSearchForm
     ) {
-        model["currentPage"] = pageable.pageNumber
-        model["eList"] = eList
-        model["maxPage"] = 10
-        model["adminSearchForm"] = form
-        model["visitToday"] = visitLogService.getTodayVisitCount()
-        model["visitTotal"] = visitLogService.getTotalVisitCount()
+        model[CURRENT_PAGE] = pageable.pageNumber
+        model[ESTIMATE_LIST] = eList
+        model[MAX_PAGE] = 10
+        model[ADMIN_SEARCH_FORM] = form
+        viewModelUtils.addVisitCount(model)
     }
 
     @ApiOperation("관리자페이지 메인화면 조회")
-    @GetMapping("/main")
+    @GetMapping(WebUris.Admin.GO_ADMIN_MAIN_PAGE)
     fun main(model: Model, pageable: Pageable): String {
         setPagingModels(
             model = model,
@@ -51,7 +58,7 @@ class AdminEstimateController(
             eList = estimateService.getAllEstimatesToAdminByPaging(pageable),
             form = AdminSearchForm()
         )
-        return "mainPage"
+        return StaticPages.ADMIN_MAIN
     }
 
     private fun setSearchParams(form: AdminSearchForm, pageable: Pageable, model: Model) {
@@ -65,56 +72,55 @@ class AdminEstimateController(
     }
 
     @ApiOperation("검색 요청 최초 검색")
-    @PostMapping("/search")
+    @PostMapping(WebUris.Admin.ESTIMATE_FIRST_SEARCH)
     fun search(
-        @Valid @ModelAttribute("adminSearchForm") form: AdminSearchForm,
+        @Valid @ModelAttribute(ADMIN_SEARCH_FORM) form: AdminSearchForm,
         pageable: Pageable,
         model: Model
     ): String {
         setSearchParams(form, pageable, model)
-        return "searchPage"
+        return StaticPages.ESTIMATE_SEARCH
     }
 
     @ApiOperation("검색한 상태에서 페이징")
-    @GetMapping("/search")
+    @GetMapping(WebUris.Admin.SEARCHING_WITH_PAGING)
     fun searchPaging(
         pageable: Pageable,
         model: Model
     ): String {
         setSearchParams(form = adminSearchFormStorage.get(), pageable, model)
-        return "searchPage"
+        return StaticPages.ESTIMATE_SEARCH
     }
 
     @ApiOperation("견적요청 상세 조회")
-    @GetMapping("/estimate/{id}")
-    fun getEstimateDetail(@PathVariable("id") id: Long, model: Model): String {
-        model["estimate"] = estimateService.getEstimateToDto(id)
-        model["visitToday"] = visitLogService.getTodayVisitCount()
-        model["visitTotal"] = visitLogService.getTotalVisitCount()
-        return "estimateDetailPage"
+    @GetMapping(WebUris.Admin.GO_ESTIMATE_DETAIL_PAGE)
+    fun getEstimateDetail(@PathVariable id: Long, model: Model): String {
+        model[ESTIMATE] = estimateService.getEstimateToDto(id)
+        viewModelUtils.addVisitCount(model)
+        return StaticPages.ESTIMATE_DETAIL
     }
 
     @ApiOperation("견적요청 엑셀 다운로드")
-    @GetMapping("/estimate/{id}/excel")
+    @GetMapping(WebUris.Admin.DOWNLOAD_EXCEL)
     fun downloadExcel(
-        @PathVariable("id") id: Long,
+        @PathVariable id: Long,
         response: HttpServletResponse
     ) = excelService.createExcel(id, response)
 
     @ApiOperation("견적요청 수정")
-    @PostMapping("/update/estimate/{id}")
+    @PostMapping(WebUris.Admin.UPDATE_ESTIMATE)
     fun updateEstimate(
-        @PathVariable("id") id: Long,
-        @ModelAttribute("estimate") form: EstimateDetailDto
+        @PathVariable id: Long,
+        @ModelAttribute(ESTIMATE) form: EstimateDetailDto
     ): String {
         estimateService.updateEstimateByAdmin(id, form)
-        return "redirect:/admin/main"
+        return StaticPages.Redirect.ADMIN_MAIN
     }
 
     @ApiOperation("견적요청 삭제(하드)")
-    @PostMapping("/delete/estimate/{id}")
-    fun deleteEstimateHardly(@PathVariable("id") id: Long): String {
+    @PostMapping(WebUris.Admin.HARD_DELETE_ESTIMATE)
+    fun deleteEstimateHardly(@PathVariable id: Long): String {
         estimateService.hardDelete(id)
-        return "redirect:/admin/main"
+        return StaticPages.Redirect.ADMIN_MAIN
     }
 }
