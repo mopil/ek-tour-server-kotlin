@@ -31,7 +31,7 @@ class FrontendEstimateRestController(
         request: HttpServletRequest
     ): GetEstimateDetailResponse {
         val result = estimateService.createEstimate(request, form)
-//        emailService.sendMail(form)
+        emailService.sendMail(form)
         return result
     }
 
@@ -83,6 +83,6 @@ class FrontendEstimateRestController(
 
     @ApiOperation("견적요청 네이버 메일 알림 전송")
     @PostMapping(Uris.EstimateApis.SEND_NAVER_MAIL)
-    fun alarm(@RequestBody form: CreateUpdateEstimateRequest): BoolResponse =
+    fun alarm(@RequestBody form: CreateUpdateEstimateRequest) =
         emailService.sendMail(form)
 }
