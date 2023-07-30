@@ -1,7 +1,8 @@
-package com.ektour.utils
+package com.ektour.common.logging
 
+import com.ektour.api.util.IpExtractor.getIp
 import com.ektour.common.MultiAccessRequestWrapper
-import com.ektour.utils.IpExtractor.getIp
+import com.ektour.common.client.SlackClient
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import java.time.LocalDateTime

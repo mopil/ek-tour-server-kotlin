@@ -1,6 +1,6 @@
 package com.ektour.configuration
 
-import com.ektour.common.Logger
+import com.ektour.common.logging.Logger
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.AsyncConfigurer

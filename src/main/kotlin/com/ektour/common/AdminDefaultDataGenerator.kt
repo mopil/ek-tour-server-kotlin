@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
-class AdminGenerator(
+class AdminDefaultDataGenerator(
     private val adminRepository: AdminRepository
 ) {
     @PostConstruct

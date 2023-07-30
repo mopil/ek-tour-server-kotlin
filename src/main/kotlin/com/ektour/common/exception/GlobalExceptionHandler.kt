@@ -2,7 +2,7 @@ package com.ektour.common.exception
 
 import com.ektour.api.dto.ErrorListResponse
 import com.ektour.api.dto.ErrorResponse
-import com.ektour.common.Logger
+import com.ektour.common.logging.Logger
 import com.ektour.web.StaticPages
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -44,7 +44,7 @@ class GlobalExceptionHandler {
         return StaticPages.CLIENT_ERROR_PAGE
     }
 
-    @ExceptionHandler(AdminException::class)
+    @ExceptionHandler(AdminException::class, ExcelException::class)
     fun redirectAdminErrorPage(ex: Exception, model: Model): String {
         Logger.warn("[${ex.javaClass.simpleName}] handled: ${ex.message}")
         model[ERROR_MESSAGE] = ex.message ?: ""

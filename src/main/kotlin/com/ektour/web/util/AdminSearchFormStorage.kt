@@ -1,4 +1,4 @@
-package com.ektour.utils
+package com.ektour.web.util
 
 import com.ektour.web.dto.AdminSearchForm
 import org.springframework.stereotype.Component

@@ -3,10 +3,10 @@ package com.ektour.web.controller
 import com.ektour.common.auth.AdminAuthenticate
 import com.ektour.service.AdminService
 import com.ektour.web.StaticPages
-import com.ektour.web.ViewModelUtils
 import com.ektour.web.WebUris
 import com.ektour.web.dto.CompanyInfoDto
 import com.ektour.web.dto.UpdateAdminPasswordForm
+import com.ektour.web.util.ViewModelUtils
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.stereotype.Controller

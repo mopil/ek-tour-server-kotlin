@@ -1,4 +1,4 @@
-package com.ektour.utils
+package com.ektour.api.util
 
 import javax.servlet.http.HttpServletRequest
 

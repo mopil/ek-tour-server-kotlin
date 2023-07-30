@@ -6,9 +6,8 @@ import com.ektour.api.dto.GetAllEstimateSimpleByPagingResponse
 import com.ektour.api.dto.GetEstimateDetailResponse
 import com.ektour.api.dto.GetEstimateRequest
 import com.ektour.api.dto.GetEstimateSimpleResponse
-import com.ektour.api.dto.GetPageTotalCountResponse
+import com.ektour.api.util.IpExtractor.getIp
 import com.ektour.model.domain.EstimateRepository
-import com.ektour.utils.IpExtractor.getIp
 import com.ektour.web.dto.AdminSearchForm
 import com.ektour.web.dto.EstimateDetailDto
 import org.springframework.data.domain.Page
@@ -33,7 +32,7 @@ class EstimateService(
         return GetEstimateDetailResponse(entity)
     }
 
-    fun getEstimateDetailByFrontend(id: Long, form: GetEstimateRequest): GetEstimateDetailResponse {
+    fun getEstimateDetailWithForm(id: Long, form: GetEstimateRequest): GetEstimateDetailResponse {
         val estimate = estimateRepository.findByIdAndPhoneAndPassword(id, form.phone, form.password)
             ?: throw IllegalArgumentException("견적서가 존재하지 않습니다.")
         return GetEstimateDetailResponse(estimate)
@@ -43,7 +42,7 @@ class EstimateService(
         return EstimateDetailDto(getEstimate(id))
     }
 
-    fun getEstimateDetail(id: Long): GetEstimateDetailResponse {
+    fun getEstimateDetailWithoutForm(id: Long): GetEstimateDetailResponse {
         return GetEstimateDetailResponse(getEstimate(id))
     }
 
@@ -54,18 +53,6 @@ class EstimateService(
     fun getAllEstimatesToAdminByPaging(pageable: Pageable): Page<EstimateDetailDto> {
         return estimateRepository.findAllByAdmin(pageable)
             .map { EstimateDetailDto(it) }
-    }
-
-    fun getAllPageCount() = GetPageTotalCountResponse(
-        (estimateRepository.countAll() / 15) + 1
-    )
-
-    fun getAllMyEstimatesToFrontendWithPaging(
-        pageable: Pageable,
-        form: GetEstimateRequest
-    ): GetAllEstimateSimpleByPagingResponse {
-        val result = estimateRepository.findAllByPhoneAndPassword(pageable, form.phone, form.password)
-        return GetAllEstimateSimpleByPagingResponse(result)
     }
 
     fun searchEstimatesByAdmin(pageable: Pageable, form: AdminSearchForm): Page<EstimateDetailDto> {

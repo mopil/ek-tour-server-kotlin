@@ -1,11 +1,11 @@
 package com.ektour.service
 
 import com.ektour.common.AdminConstants.ADMIN
+import com.ektour.common.client.CustomAwsS3Client
+import com.ektour.common.client.CustomAwsS3Client.Companion.DEFAULT_LOGO_FILENAME
 import com.ektour.common.exception.AdminException
 import com.ektour.model.domain.Admin
 import com.ektour.model.domain.AdminRepository
-import com.ektour.utils.CustomAwsS3Client
-import com.ektour.utils.CustomAwsS3Client.Companion.DEFAULT_LOGO_FILENAME
 import com.ektour.web.dto.CompanyInfoDto
 import com.ektour.web.dto.UpdateAdminPasswordForm
 import org.springframework.stereotype.Service

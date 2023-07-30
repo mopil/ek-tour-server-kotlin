@@ -1,4 +1,4 @@
-package com.ektour.utils
+package com.ektour.common.logging
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

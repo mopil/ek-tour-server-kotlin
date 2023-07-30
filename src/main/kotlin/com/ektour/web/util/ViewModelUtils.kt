@@ -1,4 +1,4 @@
-package com.ektour.web
+package com.ektour.web.util
 
 import com.ektour.service.VisitLogService
 import org.springframework.stereotype.Component

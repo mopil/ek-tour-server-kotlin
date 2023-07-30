@@ -1,4 +1,4 @@
-package com.ektour.utils
+package com.ektour.common.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.beans.factory.annotation.Value

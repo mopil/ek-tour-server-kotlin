@@ -1,16 +1,16 @@
 package com.ektour.service
 
+import com.ektour.api.util.IpExtractor.getIp
+import com.ektour.common.client.SlackClient
 import com.ektour.model.domain.VisitLog
 import com.ektour.model.domain.VisitLogRepository
-import com.ektour.utils.IpExtractor.getIp
-import com.ektour.utils.SlackClient
+import java.time.LocalDate
+import java.time.LocalDateTime
+import javax.servlet.http.HttpServletRequest
 import org.springframework.mobile.device.DeviceUtils
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
-import java.time.LocalDateTime
-import javax.servlet.http.HttpServletRequest
 
 @Component
 @Transactional
@@ -32,7 +32,7 @@ class VisitLogService(
         visitLogRepository.save(VisitLog(device = device, ip = ip))
     }
 
-    @Scheduled(cron = "0 24 * * * ?")
+    @Scheduled(cron = "59 23 * * *")
     fun sendTodayVisitLogCount() {
         val message = """
             [${LocalDate.now()}]

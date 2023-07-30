@@ -1,7 +1,6 @@
 package com.ektour.configuration
 
-import com.ektour.common.PathFinder.getFilePath
-import com.ektour.utils.ApiLoggingInterceptor
+import com.ektour.common.logging.ApiLoggingInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -9,21 +8,15 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class WebConfig(
+class AppConfig(
     private val apiLoggingInterceptor: ApiLoggingInterceptor
 ) : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
             .allowedOrigins("*")
-    }
-
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("/img/**")
-            .addResourceLocations(getFilePath())
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
