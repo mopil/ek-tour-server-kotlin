@@ -66,6 +66,15 @@ class FrontendEstimateRestController(
         return estimateService.getAllMyEstimatesToFrontendWithoutPaging(form)
     }
 
+    @ApiOperation("클라이언트 내가 쓴 견적요청 목록 조회 (페이징)")
+    @PostMapping(Uris.EstimateApis.GET_ALL_MY_ESTIMATES_WITH_PAGING)
+    fun getAllMyEstimatesToFrontendWithPaging(
+        @Valid @RequestBody form: GetEstimateRequest,
+        pageable: Pageable,
+    ): GetAllEstimateSimpleByPagingResponse {
+        return estimateService.getAllMyEstimatesToFrontendWithPaging(pageable, form)
+    }
+
     @ApiOperation("견적요청 수정")
     @PutMapping(Uris.EstimateApis.UPDATE_MY_ESTIMATE)
     fun updateEstimateByFrontend(

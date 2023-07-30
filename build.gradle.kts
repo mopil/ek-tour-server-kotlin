@@ -57,6 +57,12 @@ dependencies {
 	implementation("org.springframework.mobile:spring-mobile-device:1.1.5.RELEASE")
 
 	implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+
+	testImplementation("io.kotest:kotest-assertions-core-jvm:5.4.2")
+	testImplementation("io.kotest:kotest-runner-junit5-jvm:5.4.2")
+	testImplementation("io.kotest:kotest-property:5.4.2")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.1")
+	testImplementation("com.ninja-squad:springmockk:2.0.3")
 }
 
 tasks.withType<KotlinCompile> {

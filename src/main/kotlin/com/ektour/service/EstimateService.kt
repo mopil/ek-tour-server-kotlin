@@ -55,6 +55,14 @@ class EstimateService(
             .map { EstimateDetailDto(it) }
     }
 
+    fun getAllMyEstimatesToFrontendWithPaging(
+        pageable: Pageable,
+        form: GetEstimateRequest
+    ): GetAllEstimateSimpleByPagingResponse {
+        val result = estimateRepository.findAllByPhoneAndPassword(pageable, form.phone, form.password)
+        return GetAllEstimateSimpleByPagingResponse(result)
+    }
+
     fun searchEstimatesByAdmin(pageable: Pageable, form: AdminSearchForm): Page<EstimateDetailDto> {
         val startDate = form.start.toString()
         val endDate = form.end.plusDays(1L).toString()

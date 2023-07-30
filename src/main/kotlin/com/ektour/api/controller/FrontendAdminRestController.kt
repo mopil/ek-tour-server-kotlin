@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Api(tags = ["프론트엔드 - 관리자 정보 REST API"])
 class FrontendAdminRestController(
-    private val adminService: AdminService
+    private val adminService: AdminService,
 ) {
     @ApiOperation("관리자 정보 조회")
     @GetMapping(Uris.AdminApis.GET_ADMIN_INFO)
