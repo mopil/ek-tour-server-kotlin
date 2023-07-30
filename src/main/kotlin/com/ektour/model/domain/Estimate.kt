@@ -11,10 +11,10 @@ import com.ektour.model.VehicleTypeConverter
 import com.ektour.model.WayType
 import com.ektour.model.WayTypeConverter
 import com.ektour.web.dto.EstimateDetailDto
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @EntityListeners(AuditingEntityListener::class)

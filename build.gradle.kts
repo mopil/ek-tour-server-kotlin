@@ -6,7 +6,6 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
-	// ktlint (컨벤션 검사)
 	id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 	id("org.jlleitschuh.gradle.ktlint-idea") version "10.0.0"
 }
@@ -56,6 +55,8 @@ dependencies {
 
 	implementation("com.google.code.gson:gson:2.9.0")
 	implementation("org.springframework.mobile:spring-mobile-device:1.1.5.RELEASE")
+
+	implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 }
 
 tasks.withType<KotlinCompile> {

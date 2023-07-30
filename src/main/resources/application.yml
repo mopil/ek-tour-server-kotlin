@@ -37,4 +37,8 @@ server:
 logging:
   level:
     org.hibernate.SQL: debug
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
   config: classpath:logback/logback.xml
