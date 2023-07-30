@@ -4,11 +4,11 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
-import java.io.InputStream
-import java.util.UUID
 import org.apache.poi.ss.formula.functions.T
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.io.InputStream
+import java.util.UUID
 
 @Component
 class CustomAwsS3Client(
@@ -37,7 +37,8 @@ class CustomAwsS3Client(
             contentLength = file.size
             contentType = file.contentType
         }
-        val bucketPath = directory ?: STATIC_DIRECTORY
+        val bucketDirectory = directory ?: STATIC_DIRECTORY
+        val bucketPath = "$bucketName/$bucketDirectory"
         file.inputStream.use { inputStream ->
             s3Client.putObject(
                 PutObjectRequest(bucketPath, objectName, inputStream, objectMetadata)

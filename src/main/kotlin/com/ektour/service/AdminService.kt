@@ -8,10 +8,10 @@ import com.ektour.utils.CustomAwsS3Client
 import com.ektour.utils.CustomAwsS3Client.Companion.DEFAULT_LOGO_FILENAME
 import com.ektour.web.dto.CompanyInfoDto
 import com.ektour.web.dto.UpdateAdminPasswordForm
-import javax.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletRequest
 
 @Service
 @Transactional
