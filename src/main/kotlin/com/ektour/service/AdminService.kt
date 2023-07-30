@@ -1,22 +1,24 @@
 package com.ektour.service
 
 import com.ektour.common.AdminConstants.ADMIN
-import com.ektour.common.PathFinder.getLogoPath
 import com.ektour.common.exception.AdminException
 import com.ektour.model.domain.Admin
 import com.ektour.model.domain.AdminRepository
+import com.ektour.utils.CustomAwsS3Client
+import com.ektour.utils.CustomAwsS3Client.Companion.DEFAULT_LOGO_FILENAME
 import com.ektour.web.dto.CompanyInfoDto
 import com.ektour.web.dto.UpdateAdminPasswordForm
+import javax.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
-import java.io.IOException
-import javax.servlet.http.HttpServletRequest
 
 @Service
 @Transactional
-class AdminService(private val adminRepository: AdminRepository) {
+class AdminService(
+    private val adminRepository: AdminRepository,
+    private val s3Client: CustomAwsS3Client
+) {
 
     fun getAdmin(): Admin = adminRepository.findById(1L)
         .orElseThrow { throw AdminException("관리자 조회 실패") }
@@ -42,10 +44,6 @@ class AdminService(private val adminRepository: AdminRepository) {
     fun updateCompanyInfo(form: CompanyInfoDto) = getAdmin().updateCompanyInfo(form)
 
     fun updateLogo(file: MultipartFile) {
-        try {
-            file.transferTo(File(getLogoPath()))
-        } catch (e: IOException) {
-            throw AdminException("로고 변경 오류 : ${e.message}")
-        }
+        s3Client.uploadObject(file = file, fileName = DEFAULT_LOGO_FILENAME)
     }
 }
