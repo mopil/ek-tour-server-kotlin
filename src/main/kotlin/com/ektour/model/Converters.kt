@@ -41,3 +41,13 @@ class WayTypeConverter : AttributeConverter<WayType, String> {
         return WayType.fromKor(dbData)
     }
 }
+
+class TravelTypeConverter : AttributeConverter<TravelType, String> {
+    override fun convertToDatabaseColumn(attribute: TravelType?): String {
+        return attribute?.name ?: TravelType.일반여행.name
+    }
+
+    override fun convertToEntityAttribute(dbData: String?): TravelType {
+        return TravelType.from(dbData)
+    }
+}

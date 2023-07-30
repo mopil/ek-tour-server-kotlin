@@ -6,15 +6,16 @@ import com.ektour.model.PaymentsMethodsConverter
 import com.ektour.model.TaxBillYesOrNo
 import com.ektour.model.TaxBillYesOrNoConverter
 import com.ektour.model.TravelType
+import com.ektour.model.TravelTypeConverter
 import com.ektour.model.VehicleType
 import com.ektour.model.VehicleTypeConverter
 import com.ektour.model.WayType
 import com.ektour.model.WayTypeConverter
 import com.ektour.web.dto.EstimateDetailDto
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @EntityListeners(AuditingEntityListener::class)
@@ -49,6 +50,7 @@ class Estimate(
     var password: String = password
         protected set
 
+    @Convert(converter = TravelTypeConverter::class)
     var travelType: TravelType = travelType
         protected set
     @Convert(converter = VehicleTypeConverter::class)

@@ -7,16 +7,15 @@ import com.ektour.api.dto.GetAllEstimateSimpleByPagingResponse
 import com.ektour.api.dto.GetEstimateDetailResponse
 import com.ektour.api.dto.GetEstimateRequest
 import com.ektour.api.dto.GetEstimateSimpleResponse
-import com.ektour.api.dto.GetPageTotalCountResponse
 import com.ektour.service.EmailService
 import com.ektour.service.EstimateService
 import com.ektour.web.dto.EstimateDetailDto
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import org.springframework.data.domain.Pageable
-import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
+import org.springframework.data.domain.Pageable
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @Api(tags = ["프론트엔드 - 견적요청 REST API"])
@@ -52,9 +51,9 @@ class FrontendEstimateRestController(
     fun getAllEstimatesToFrontendByPaging(pageable: Pageable): GetAllEstimateSimpleByPagingResponse =
         estimateService.getAllEstimatesToFrontendByPaging(pageable)
 
-    @ApiOperation("존재하는 전체 페이지 수 조회")
-    @GetMapping(Uris.EstimateApis.GET_ALL_PAGE_COUNT)
-    fun getAllPageCount(): GetPageTotalCountResponse = estimateService.getAllPageCount()
+//    @ApiOperation("존재하는 전체 페이지 수 조회")
+//    @GetMapping(Uris.EstimateApis.GET_ALL_PAGE_COUNT)
+//    fun getAllPageCount(): GetPageTotalCountResponse = estimateService.getAllPageCount()
 
     @ApiOperation("클라이언트 내가 쓴 견적요청 목록 조회 (페이징X)")
     @PostMapping(Uris.EstimateApis.GET_ALL_MY_ESTIMATES_WITHOUT_PAGING)
@@ -62,12 +61,12 @@ class FrontendEstimateRestController(
         @Valid @RequestBody form: GetEstimateRequest
     ): List<GetEstimateSimpleResponse> = estimateService.getAllMyEstimatesToFrontendWithoutPaging(form)
 
-    @ApiOperation("클라이언트 내가 쓴 견적요청 목록 조회 (페이징)")
-    @PostMapping(Uris.EstimateApis.GET_ALL_MY_ESTIMATES_WITH_PAGING)
-    fun getAllMyEstimatesToFrontendWithPaging(
-        @Valid @RequestBody form: GetEstimateRequest,
-        pageable: Pageable,
-    ): GetAllEstimateSimpleByPagingResponse = estimateService.getAllMyEstimatesToFrontendWithPaging(pageable, form)
+//    @ApiOperation("클라이언트 내가 쓴 견적요청 목록 조회 (페이징)")
+//    @PostMapping(Uris.EstimateApis.GET_ALL_MY_ESTIMATES_WITH_PAGING)
+//    fun getAllMyEstimatesToFrontendWithPaging(
+//        @Valid @RequestBody form: GetEstimateRequest,
+//        pageable: Pageable,
+//    ): GetAllEstimateSimpleByPagingResponse = estimateService.getAllMyEstimatesToFrontendWithPaging(pageable, form)
 
     @ApiOperation("견적요청 수정")
     @PutMapping(Uris.EstimateApis.UPDATE_MY_ESTIMATE)
@@ -81,8 +80,8 @@ class FrontendEstimateRestController(
     fun softDelete(@PathVariable("id") id: Long): BoolResponse =
         estimateService.softDelete(id)
 
-    @ApiOperation("견적요청 네이버 메일 알림 전송")
-    @PostMapping(Uris.EstimateApis.SEND_NAVER_MAIL)
-    fun alarm(@RequestBody form: CreateUpdateEstimateRequest) =
-        emailService.sendMail(form)
+//    @ApiOperation("견적요청 네이버 메일 알림 전송")
+//    @PostMapping(Uris.EstimateApis.SEND_NAVER_MAIL)
+//    fun alarm(@RequestBody form: CreateUpdateEstimateRequest) =
+//        emailService.sendMail(form)
 }
