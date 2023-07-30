@@ -32,7 +32,7 @@ class VisitLogService(
         visitLogRepository.save(VisitLog(device = device, ip = ip))
     }
 
-    @Scheduled(cron = "59 23 * * *")
+    @Scheduled(cron = "59 23 * * * *")
     fun sendTodayVisitLogCount() {
         val message = """
             [${LocalDate.now()}]
